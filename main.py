@@ -3,8 +3,6 @@
 
 from UC3MTravel import HotelManager
 
-# test comment
-
 
 def main():
     mng = HotelManager()
