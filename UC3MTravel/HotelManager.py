@@ -7,9 +7,28 @@ class HotelManager:
         pass
 
     def validatecreditcard( self, x ):
-        # PLEASE INCLUDE HERE THE CODE FOR VALIDATING THE GUID
-        # RETURN TRUE IF THE GUID IS RIGHT, OR FALSE IN OTHER CASE
-        return True
+        # Remove any non-digit characters from the input string
+        x = ''.join(filter(str.isdigit, x))
+
+        # Reverse the string
+        x = x[::-1]
+
+        total = 0
+        for i in range(len(x)):
+            digit = int(x[i])
+
+            # Double every second digit
+            if i % 2 == 1:
+                digit *= 2
+
+                # If the doubled digit is greater than 9, subtract 9
+                if digit > 9:
+                    digit -= 9
+
+            total += digit
+
+        # The number is valid if the total is a multiple of 10
+        return total % 10 == 0
 
     def ReaddatafromJSOn( self, fi):
 

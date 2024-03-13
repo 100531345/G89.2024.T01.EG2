@@ -11,6 +11,13 @@ def main():
     print(strRes)
     print("CreditCard: " + res.CREDITCARD)
     print(res.LOCALIZER)
+    print("Past One\n")
+    res = mng.ReaddatafromJSOn("test2.json")
+    strRes = res.__str__()
+    print(strRes)
+    print("CreditCard: " + res.CREDITCARD)
+    print(res.LOCALIZER)
+    print("Past Two\n")
 
 if __name__ == "__main__":
     main()

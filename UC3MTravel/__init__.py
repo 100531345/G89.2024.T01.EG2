@@ -1,0 +1,1 @@
+from UC3MTravel.HotelManager import HotelManager
