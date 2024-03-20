@@ -1,16 +1,23 @@
-#THIS MAIN PROGRAM IS ONLY VALID FOR THE FIRST THREE WEEKS OF CLASS
-#IN GUIDED EXERCISE 2.2, TESTING MUST BE PERFORMED USING UNITTESTS.
+"""Main."""
 
-from UC3MTravel import HotelManager
+from uc3m_travel import HotelManager
 
 
 def main():
+    """Main program."""
     mng = HotelManager()
-    res = mng.ReaddatafromJSOn("test.json")
-    strRes = res.__str__()
-    print(strRes)
-    print("CreditCard: " + res.CREDITCARD)
-    print(res.LOCALIZER)
+    res = mng.read_data_from_json("test.json")
+    str_res = str(res)
+    print(str_res)
+    print("CreditCard: " + res.credit_card)
+    print(res.localizer)
+    print("Past One\n")
+    res = mng.read_data_from_json("test2.json")
+    str_res = str(res)
+    print(str_res)
+    print("CreditCard: " + res.credit_card)
+    print(res.localizer)
+    print("Past Two\n")
 
 if __name__ == "__main__":
     main()
