@@ -1,9 +1,37 @@
 """ Class HotelStay (GE2.2) """
 from datetime import datetime
 import hashlib
+import json
+from uc3m_travel import HotelManagementException
 
-class HotelStay():
+
+def guest_arrival(input_file):
+    arrival_data = read_data_from_json(input_file)
+    localizer = arrival_data["Localizer"]
+    id_value = arrival_data["idCard"]
+    hotel_data = read_data_from_json("uc3m_travel/data/hotel_stay_test_data.json")
+    # check localizer exists in hotel_data, then that ID matches
+    # if valid, generate an instance of the HotelStay class
+
+    # Returns hexadecimal string with the room key (HM-FR-02-O1)
+    # Returns a file that includes the data with all the processed stays.
+    return
+
+
+def read_data_from_json(fi, encoding="utf-8"):
+    try:
+        with open(fi, encoding=encoding, mode='r') as f:
+            data = json.load(f)
+    except FileNotFoundError as e:
+        raise HotelManagementException("Wrong file or file path") from e
+    except json.JSONDecodeError as e2:
+        # raise
+    return data
+
+
+class HotelStay:
     """Custom class for hotel stays."""
+
     def __init__(self, idcard, localizer, num_days, room_type):
         self.__alg = "SHA-256"
         self.__type = room_type
@@ -11,8 +39,8 @@ class HotelStay():
         self.__localizer = localizer
         justnow = datetime.utcnow()
         self.__arrival = justnow
-        #timestamp is represented in seconds.miliseconds
-        #to add the number of days we must express numdays in seconds
+        # timestamp is represented in seconds.miliseconds
+        # to add the number of days we must express numdays in seconds
         self.__departure = self.__arrival + (num_days * 24 * 60 * 60)
 
     def __signature_string(self):
