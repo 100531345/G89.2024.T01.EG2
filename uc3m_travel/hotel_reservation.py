@@ -3,6 +3,11 @@
 import hashlib
 from datetime import datetime
 
+#this is the method I am making for function 1, we should consider moving this to inside a class
+
+def request_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival, num_days):
+    return "function not implemented"
+
 class HotelReservation:
     """Custom class for hotel reservations."""
     def __init__(self, data):
