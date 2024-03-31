@@ -24,8 +24,9 @@ def read_data_from_json(fi, encoding="utf-8"):
             data = json.load(f)
     except FileNotFoundError as e:
         raise HotelManagementException("Wrong file or file path") from e
-    except json.JSONDecodeError as e2:
-        # raise
+    except json.JSONDecodeError as e2: # raise
+        raise HotelManagementException("Wrong file or file path") from e2
+        # EDIT THIS ONE
     return data
 
 

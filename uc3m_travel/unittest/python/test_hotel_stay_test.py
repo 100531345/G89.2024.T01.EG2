@@ -1,6 +1,6 @@
-from unittest import Testcase
-from hotel_reservation import request_reservation
-import hotel_management_exception
+from uc3m_travel import request_reservation
+from uc3m_travel import hotel_management_exception
+from unittest import TestCase
 
 class TestRequestReservation(TestCase):
 
