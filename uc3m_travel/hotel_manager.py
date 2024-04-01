@@ -4,6 +4,27 @@ import json
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelReservation
 
+VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
+
+def request_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival, num_days):
+    if not isinstance( credit_card_number, int) or len(str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(credit_card_number):
+        raise HotelManagementException("Something is wrong with the credit card number")
+    if not isinstance(id_card, str) or len(id_card) != 8: #still need to add nif alg compliance and check length
+        raise HotelManagementException("Something is wrong with the id card number still need to add nif alg check")
+    if not isinstance(name_surname, str) or len(name_surname) < 10 or len(name_surname) > 50:
+        raise HotelManagementException("Something is wrong with name surname")
+    if not isinstance(phone_number, int) or len(phone_number) != 9:
+        raise HotelManagementException("Something is wrong with the phone number")
+    if not isinstance(room_type, str) or room_type not in VALID_ROOM_TYPES:
+        raise HotelManagementException("Something is wrong with the room type")
+    if not isinstance(arrival, str) or len(arrival) != 10: #add the rest of the checks about valid dates
+        raise HotelManagementException("Something is wrong with the arrival date")
+    if not isinstance(num_days, int) or num_days < 1 or num_days > 10:
+        raise HotelManagementException("Something is wrong with num days")
+
+
+    return "function not implemented"
+
 
 class HotelManager:
     """Custom class for hotel management."""
@@ -11,8 +32,12 @@ class HotelManager:
     def __init__(self):
         pass
 
-    def validate_credit_card(self, x):
+
+    @staticmethod
+    def validate_credit_card(x):
         """Validates a credit card."""
+        #turn the int value into a string
+        x = str(x)
         # Remove any non-digit characters from the input string
         x = ''.join(filter(lambda char: char.isdigit(), x))
 

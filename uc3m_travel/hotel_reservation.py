@@ -2,32 +2,9 @@
 
 import hashlib
 from datetime import datetime
-from math import abs
-import hotel_manager.py
-import hotel_management_exception
-
-VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
 #this is the method I am making for function 1, we should consider moving this to inside a class
 
-def request_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival, num_days):
-    if not is_instance(int, credit_card_number) or len(str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(credit_card_number):
-        raise HotelManagementException("Something is wrong with the credit card number")
-    if not is_instance(str, id_card) or len(id_card) != 8: #still need to add nif alg compliance and check length
-        raise HotelManagementException("Something is wrong with the id card number still need to add nif alg check")
-    if not is_instance(str, name_surname) or len(name_surname) < 10 or len(name_surname) > 50:
-        raise HotelManagementException("Something is wrong with name surname")
-    if not is_instance(int, phone_number) or len(phone_number) != 9:
-        raise HotelManagementException("Something is wrong with the phone number")
-    if not is_instance(str, room_type) or room_type not in VALID_ROOM_TYPES:
-        raise HotelManagementException("Something is wrong with the room type")
-    if not is_instance(str, arrival) or len(arrival) != 10: #add the rest of the checks about valid dates
-        raise HotelManagementException("Something is wrong with the arrival date")
-    if not is_instance(int, num_days) or num_days < 1 or num_days > 10:
-        raise HotelManagementException("Something is wrong with num days")
-
-
-    return "function not implemented"
 
 class HotelReservation:
     """Custom class for hotel reservations."""
