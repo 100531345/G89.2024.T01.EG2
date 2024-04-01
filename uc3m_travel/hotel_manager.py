@@ -12,22 +12,31 @@ def request_reservation(credit_card_number, id_card, name_surname, phone_number,
     if not isinstance(credit_card_number, int) or len(
             str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(
             credit_card_number):
-        raise HotelManagementException("Something is wrong with the credit card number")
-    if not isinstance(id_card, str) or len(
-            id_card) != 8:  # still need to add nif alg compliance and check length
+        raise HotelManagementException("bad credit card number")
+    if not isinstance(id_card, str) or len(id_card) != 8:  # still need to add nif alg compliance and check length
         raise HotelManagementException(
-            "Something is wrong with the id card number still need to add nif alg check")
+            "bad id card")
     if not isinstance(name_surname, str) or len(name_surname) < 10 or len(name_surname) > 50:
-        raise HotelManagementException("Something is wrong with name surname")
-    if not isinstance(phone_number, int) or len(phone_number) != 9:
-        raise HotelManagementException("Something is wrong with the phone number")
+        raise HotelManagementException("bad name surname")
+    if not isinstance(phone_number, int) or len(str(phone_number)) != 9:
+        raise HotelManagementException("bad phone number")
     if not isinstance(room_type, str) or room_type not in VALID_ROOM_TYPES:
-        raise HotelManagementException("Something is wrong with the room type")
+        raise HotelManagementException("bad room type")
     if not isinstance(arrival, str) or len(
             arrival) != 10:  # add the rest of the checks about valid dates
-        raise HotelManagementException("Something is wrong with the arrival date")
+        raise HotelManagementException("bad arrival")
     if not isinstance(num_days, int) or num_days < 1 or num_days > 10:
-        raise HotelManagementException("Something is wrong with num days")
+        raise HotelManagementException("bad num days")
+
+    data = {
+        'credit_card_number': credit_card_number,
+        'id_card': id_card,
+        'name_surname': name_surname,
+        'phone_number': phone_number,
+        'room_type': room_type,
+        'num_days': num_days,
+    }
+    reservation = HotelReservation(data)
 
     return "function not implemented"
 
