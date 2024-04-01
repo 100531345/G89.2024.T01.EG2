@@ -3,6 +3,7 @@
 import json
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelReservation
+import stdnum
 
 VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
@@ -13,9 +14,8 @@ def request_reservation(credit_card_number, id_card, name_surname, phone_number,
             str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(
             credit_card_number):
         raise HotelManagementException("bad credit card number")
-    if not isinstance(id_card, str) or len(id_card) != 8:  # still need to add nif alg compliance and check length
-        raise HotelManagementException(
-            "bad id card")
+    if not isinstance(id_card, str) or len(id_card) != 9:  # still need to add nif alg compliance and check length
+        raise HotelManagementException("bad id card")
     if not isinstance(name_surname, str) or len(name_surname) < 10 or len(name_surname) > 50:
         raise HotelManagementException("bad name surname")
     if not isinstance(phone_number, int) or len(str(phone_number)) != 9:
@@ -24,6 +24,16 @@ def request_reservation(credit_card_number, id_card, name_surname, phone_number,
         raise HotelManagementException("bad room type")
     if not isinstance(arrival, str) or len(
             arrival) != 10:  # add the rest of the checks about valid dates
+        raise HotelManagementException("bad arrival")
+    arrival = arrival.split("/")
+    if len(arrival) != 3 or len(arrival[0]) != 2 or len(arrival[1]) != 2 or len(arrival[2]) != 4:
+        raise HotelManagementException("bad arrival")
+    for i in range(len(arrival)):
+        try:
+            arrival[i] = int(arrival[i])
+        except:
+            raise HotelManagementException("bad arrival")
+    if arrival[0] < 1 or arrival[0] > 31 or arrival [1] < 1 or arrival[1] > 12:
         raise HotelManagementException("bad arrival")
     if not isinstance(num_days, int) or num_days < 1 or num_days > 10:
         raise HotelManagementException("bad num days")
