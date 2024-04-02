@@ -6,3 +6,4 @@ from .hotel_management_exception import HotelManagementException
 from .hotel_reservation import HotelReservation
 from .hotel_manager import HotelManager
 from .hotel_manager import request_reservation
+from .hotel_stay import guest_arrival

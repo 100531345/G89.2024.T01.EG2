@@ -1,6 +1,13 @@
-from uc3m_travel import request_reservation, HotelManagementException
+from freezegun import freeze_time
+from uc3m_travel import request_reservation
+from uc3m_travel import guest_arrival
+from uc3m_travel import HotelManagementException
 from unittest import TestCase
 import re
+import json
+import tempfile
+import os
+
 
 class TestRequestReservation(TestCase):
 
@@ -47,9 +54,8 @@ class TestRequestReservation(TestCase):
                           request_reservation, 5555555555554444, 0, "JOSE LOPEZ", 911234567, "SINGLE", "01/07/2024", 2)
 
     def test_request_TC10(self):
-        self.assertEquals(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                                                    "01/07/2024", 2))
-
+        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                                                   "6/14/24", 2))
     def test_request_TC11(self):
         self.assertRaisesRegexp(HotelManagementException,"bad name surname",
                           request_reservation, 5555555555554444, "12345678Z", 12, 911234567, "SINGLE", "01/07/2024", 2)
@@ -65,9 +71,9 @@ class TestRequestReservation(TestCase):
                                               "01/07/2024", 2)
 
     def test_request_TC14(self):
-        self.assertEquals(HotelManagementException,
-                          request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                                              "01/07/2024", 2))
+        self.assertEqual(HotelManagementException,
+                         request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                                             "6/14/24", 2))
 
     def test_request_TC15(self):
         self.assertRaisesRegexp(HotelManagementException,"bad phone number",
@@ -85,16 +91,16 @@ class TestRequestReservation(TestCase):
                                               "01/07/2024", 2)
 
     def test_request_TC18(self):
-        self.assertEquals(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                                                    "01/07/2024", 2))
+        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                                                   "6/14/24", 2))
 
     def test_request_TC19(self):
-        self.assertEquals(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "DOUBLE",
-                                                    "01/07/2024", 2))
+        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "DOUBLE",
+                                                   "6/14/24", 2))
 
     def test_request_TC20(self):
-        self.assertEquals(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "TRIPLE",
-                                                    "01/07/2024", 2))
+        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "TRIPLE",
+                                                   "6/14/24", 2))
 
     def test_request_TC21(self):
         self.assertRaisesRegexp(HotelManagementException,"bad room type",
@@ -107,8 +113,8 @@ class TestRequestReservation(TestCase):
                                               2)
 
     def test_request_TC23(self):
-        self.assertEquals(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                                                    "01/07/2024", 2))
+        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                                                   "6/14/24", 2))
 
     def test_request_TC24(self):
         self.assertRaisesRegexp(HotelManagementException,"bad arrival",
@@ -146,8 +152,8 @@ class TestRequestReservation(TestCase):
                                               "01/01/20000", 2)
 
     def test_request_TC31(self):
-        self.assertEquals(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                                                    "01/07/2024", 5))
+        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                                                   "6/14/24", 5))
 
     def test_request_TC32(self):
         self.assertRaisesRegexp(HotelManagementException,"bad num days",
@@ -167,5 +173,851 @@ class TestRequestReservation(TestCase):
 
 class TestStayHotel(TestCase):
 
+    @freeze_time("2024-4-01")
     def test_stay_1(self):
-        return
+        valid_json = '{"Localizer": "5eb63bbbe01eeed093cb22bb8f5acdc3", "IdCard": "12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(valid_json)
+
+        result = guest_arrival(temp_file.name)
+        self.assertEqual(result, "MAKE THIS STRING")
+        os.unlink(temp_file.name)
+
+    @freeze_time("2024-4-01")
+    def test_stay_fail_date(self):
+        valid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(valid_json)
+
+        with self.assertRaises(HotelManagementException) as message:
+            result = guest_arrival(temp_file.name)
+
+        expected_error_message = "The arrival date does not correspond to the reservation date."
+        self.assertEqual(expected_error_message, str(message.exception))
+        os.unlink(temp_file.name)
+    def test_stay_2(self):
+        invalid_json = '"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException) as message:
+            guest_arrival(temp_file.name)
+
+        expected_error_message = "The file is not in JSON format."
+        self.assertEqual(str(message.exception), expected_error_message)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_3(self):
+        invalid_json = '{"Localizer": "AHDE3EDDGDS", "IdCard": "12345678Z"'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_4(self):
+        invalid_json = '["Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_5(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_6(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_7(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"]'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_8(self):
+        invalid_json = '{}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException) as message:
+            guest_arrival(temp_file.name)
+
+        expected_error_message = "The JSON does not have the expected structure."
+        self.assertEqual(str(message.exception), expected_error_message)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_9(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z" "Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_10(self):
+        invalid_json = '{,"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_11(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3" "Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_12(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3""IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_13(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",,"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_14(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3"."IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_15(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_16(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z" "IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_17(self):
+        invalid_json = '{:"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_18(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3" "Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_19(self):
+        invalid_json = '{"Localizer""5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_20(self):
+        invalid_json = '{"Localizer"::"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_21(self):
+        invalid_json = '{"Localizer";"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_22(self):
+        invalid_json = '{"Localizer":,"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_23(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3""5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_24(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3""IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_25(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",,"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_26(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3"."IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_27(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",:"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_28(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard""IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_29(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard""12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_30(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard"::"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_31(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard";"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_32(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_33(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z""12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_34(self):
+        invalid_json = '{Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_35(self):
+        invalid_json = '{""Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_36(self):
+        invalid_json = '{:Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_37(self):
+        invalid_json = '{"":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_38(self):
+        invalid_json = '{"LocalizerLocalizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_39(self):
+        invalid_json = '{"Farizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_40(self):
+        invalid_json = '{"Localizer:"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_41(self):
+        invalid_json = '{"Localizer"":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_42(self):
+        invalid_json = '{"Localizer::"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_43(self):
+        invalid_json = '{"Localizer":5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_44(self):
+        invalid_json = '{"Localizer":""5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_45(self):
+        invalid_json = '{"Localizer"::5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_46(self):
+        invalid_json = '{"Localizer":"","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_47(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc35eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_48(self):
+        invalid_json = '{"Localizer":"TEST","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException) as message:
+            guest_arrival(temp_file.name)
+
+        expected_error_message = "The locator does not correspond to the stored data"
+        self.assertEqual(expected_error_message, str(message.exception))
+
+        os.unlink(temp_file.name)
+
+    def test_stay_49(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3,"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_50(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3"","IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_51(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3:,"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_52(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_53(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",""IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_54(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3",:IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_55(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_56(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCardIdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_57(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","HotelRoom":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_58(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard:"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_59(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard"":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_60(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard::"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_61(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_62(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":""12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_63(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard"::12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_64(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":""}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_65(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_66(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"14"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_67(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_68(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z""}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
+
+    def test_stay_69(self):
+        invalid_json = '{"Localizer":"5eb63bbbe01eeed093cb22bb8f5acdc3","IdCard":"12345678Z:}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(invalid_json)
+
+        # Test if the function raises the expected exception
+        with self.assertRaises(HotelManagementException):
+            guest_arrival(temp_file.name)
+
+        os.unlink(temp_file.name)
