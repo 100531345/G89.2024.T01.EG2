@@ -114,7 +114,7 @@ unsafe-load-any-extension=no
 [BASIC]
 
 # Naming style matching correct argument names.
-argument-naming-style=snake_case
+argument-naming-style=camelCase
 
 # Regular expression matching correct argument names. Overrides argument-
 # naming-style. If left empty, argument names will be checked with the set
@@ -177,7 +177,7 @@ const-naming-style=UPPER_CASE
 docstring-min-length=10
 
 # Naming style matching correct function names.
-function-naming-style=snake_case
+function-naming-style=camelCase
 
 # Regular expression matching correct function names. Overrides function-
 # naming-style. If left empty, function names will be checked with the set
@@ -297,19 +297,19 @@ max-bool-expr=5
 max-branches=12
 
 # Maximum number of locals for function / method body.
-max-locals=15
+max-locals=20
 
 # Maximum number of parents for a class (see R0901).
-max-parents=7
+max-parents=4
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20
 
 # Maximum number of return / yield for function / method body.
-max-returns=6
+max-returns=5
 
 # Maximum number of statements in function / method body.
-max-statements=50
+max-statements=40
 
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
@@ -337,7 +337,7 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-max-line-length=100
+max-line-length=150
 
 # Maximum number of lines in a module.
 max-module-lines=1000
@@ -460,7 +460,7 @@ notes-rgx=
 [REFACTORING]
 
 # Maximum number of nested blocks for function / method body
-max-nested-blocks=5
+max-nested-blocks=4
 
 # Complete name of functions that never returns. When checking for
 # inconsistent-return-statements if a never returning function is called then
@@ -510,13 +510,13 @@ ignore-imports=yes
 ignore-signatures=yes
 
 # Minimum lines number of a similarity.
-min-similarity-lines=4
+min-similarity-lines=6
 
 
 [SPELLING]
 
 # Limits count of emitted suggestions for spelling mistakes.
-max-spelling-suggestions=4
+max-spelling-suggestions=8
 
 # Spelling dictionary name. No available dictionaries : You need to install
 # both the python package and the system dependency for enchant to work.
@@ -527,7 +527,7 @@ spelling-dict=
 spelling-ignore-comment-directives=fmt: on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:
 
 # List of comma separated words that should not be checked.
-spelling-ignore-words=
+spelling-ignore-words=conmattcon
 
 # A path to a file that contains the private dictionary; one word per line.
 spelling-private-dict-file=
