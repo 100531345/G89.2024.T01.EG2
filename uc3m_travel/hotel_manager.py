@@ -30,15 +30,15 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
     if not isinstance(arrival, str) or len(
             arrival) != 10:  # add the rest of the checks about valid dates
         raise HotelManagementException("bad arrival")
-    arrival = arrival.split("/")
-    if len(arrival) != 3 or len(arrival[0]) != 2 or len(arrival[1]) != 2 or len(arrival[2]) != 4:
+    arrival_list = arrival.split("/")
+    if len(arrival_list) != 3 or len(arrival_list[0]) != 2 or len(arrival_list[1]) != 2 or len(arrival_list[2]) != 4:
         raise HotelManagementException("bad arrival")
-    for i in range(len(arrival)):
+    for i in range(len(arrival_list)):
         try:
             arrival[i] = int(arrival[i])
         except:
             raise HotelManagementException("bad arrival")
-    if arrival[0] < 1 or arrival[0] > 31 or arrival [1] < 1 or arrival[1] > 12:
+    if arrival_list[0] < 1 or arrival_list[0] > 31 or arrival_list[1] < 1 or arrival_list[1] > 12:
         raise HotelManagementException("bad arrival")
     if not isinstance(numDays, int) or numDays < 1 or numDays > 10:
         raise HotelManagementException("bad num days")
