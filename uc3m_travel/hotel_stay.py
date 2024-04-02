@@ -25,14 +25,14 @@ def guest_arrival(input_file):
     except json.JSONDecodeError as e2:  # raise
         raise HotelManagementException("The file is not in JSON format.") from e2
     if not isinstance(data, dict):
-        raise HotelManagementException("The file is not in JSON format.")
+        raise HotelManagementException("The JSON does not have the expected structure.")
 
     current = ""
     try:
         localizer = data.get("Localizer")
         id_card = data.get("IdCard")
         if not isinstance(id_card, str) or not isinstance(localizer, str):
-            raise HotelManagementException("The JSON does not have the expected structure.")
+            raise HotelManagementException("The JSON data does not have valid values.")
     except AttributeError:
         raise HotelManagementException("The JSON does not have the expected structure.")
 
@@ -49,19 +49,17 @@ def guest_arrival(input_file):
                 id_found = True
                 # check if dates are right here
                 arrival = stay["arrival"]
-                arrival_date = datetime.strptime(arrival, "%d/%m/%Y")
                 num_days = stay["num_days"]
-                if datetime.now() < arrival_date:
+                arrival_date = datetime.strptime(arrival, "%d/%m/%Y")
+                current_datetime = datetime.now()
+                if current_datetime != arrival_date:
                     raise HotelManagementException("The arrival date does not correspond to the reservation date.")
                 current = HotelStay(id_card, localizer, num_days, stay["Type"])
-                current_datetime = datetime.now()
-                if current_datetime > current.departure:
-                    raise HotelManagementException("The arrival date does not correspond to the reservation date.")
     if not id_found or not loc_found:
         raise HotelManagementException("The locator does not correspond to the stored data")
 
     # Creates a file that includes the data with all the processed stays.
-    stay.write_to_file("/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
+    current.write_to_file("/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
                        "/hotel_stay_output.json")
 
     # Returns hexadecimal string with the room key (HM-FR-02-O1)
@@ -77,18 +75,20 @@ class HotelStay:
         self.__idcard = idcard
         self.__localizer = localizer
         justnow = datetime.utcnow()
-        self.__arrival = justnow.strftime("%d/%m/%Y")
+        self.__arrival = justnow
         # timestamp is represented in seconds.miliseconds
         # to add the number of days we must express numdays in seconds
-        num_days = int(num_days)
-        self.departure = datetime.now() + timedelta(days=num_days)
+        self.departure = self.__arrival + timedelta(days=int(num_days))
         self.hex_str = self.__signature_string()
 
     def __signature_string(self):
         """Composes the string to be used for generating the key for the room"""
+        arrival_str = self.__arrival.strftime("%d/%m/%Y")
+        departure_str = self.departure.strftime("%d/%m/%Y")
+
         return "{alg:" + self.__alg + ",typ:" + self.__type + ",localizer:" + \
-            self.__localizer + ",arrival:" + self.__arrival + \
-            ",departure:" + self.__departure + "}"
+            self.__localizer + ",arrival:" + arrival_str + \
+            ",departure:" + departure_str + "}"
 
     @property
     def id_card(self):
