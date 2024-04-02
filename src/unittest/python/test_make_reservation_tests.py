@@ -2,9 +2,8 @@
 import json
 import os
 from unittest import TestCase
-from uc3m_travel.hotel_manager import roomReservation
+from src.main.python.uc3m_travel.hotel_manager import roomReservation
 from src.main.python.uc3m_travel.hotel_management_exception import HotelManagementException
-from uc3m_travel.hotel_management_exception import HotelManagementException
 
 
 class TestRequestReservation(TestCase):
