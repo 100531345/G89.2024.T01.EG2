@@ -1,10 +1,10 @@
-[
-  {
-    "Localizer": "5eb63bbbe01eeed093cb22bb8f5acdc3",
-    "Algorithm": "SHA-256",
-    "Type": "SINGLE",
-    "idCard": "12345678Z",
-    "arrival": "01/04/2024",
-    "num_days": "3"
-  }
-]
+{
+    "id_card": "12345678Z",
+    "name_surname": "JOSE LOPEZ",
+    "credit_card": 5555555555554444,
+    "phone_number:": 911234567,
+    "arrival_date": 1712061056.724948,
+    "num_days": 2,
+    "room_type": "SINGLE",
+    "Localizer": "29724fd4998a2892d236d70574ca0c54"
+}

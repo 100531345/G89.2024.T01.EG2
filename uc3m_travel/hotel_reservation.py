@@ -2,6 +2,7 @@
 
 import hashlib
 from datetime import datetime
+import json
 
 #this is the method I am making for function 1, we should consider moving this to inside a class
 
@@ -11,7 +12,7 @@ class HotelReservation:
     def __init__(self, data):
         self.__idcard = data.get('id_card')
         justnow = datetime.utcnow()
-        self.__arrival = datetime.timestamp(justnow)
+        self.__arrival = justnow.strftime("%d/%m/%Y")
         self.__name_surname = data.get('name_and_sur')
         self.__phone_number = data.get('phone_num')
         self.__room_type = data.get('room_type')
@@ -54,3 +55,32 @@ class HotelReservation:
     def localizer(self):
         """Returns the md5 signature"""
         return hashlib.md5(str(self).encode()).hexdigest()
+
+    def to_dict(self):
+        """custom Convert the HotelReservation instance to a dictionary."""
+        return {"id_card": self.__idcard,
+                "name_surname": self.__name_surname,
+                "credit_card": self.__credit_card_number,
+                "phone_number:": self.__phone_number,
+                "arrival_date": self.__arrival,
+                "num_days": self.__num_days,
+                "room_type": self.__room_type,
+                "Localizer": self.localizer
+                }
+
+    def write_to_file(self, filename):
+        """Write the HotelStay data to a JSON file."""
+        data = self.to_dict()
+        try:
+            with open(filename, 'r') as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            existing_data = []
+        except json.JSONDecodeError:
+            existing_data = []
+
+        print(existing_data)
+        existing_data.append(data)
+
+        with open(filename, 'w') as f:
+            json.dump(existing_data, f, indent=4)

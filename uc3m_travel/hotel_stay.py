@@ -4,6 +4,8 @@ import hashlib
 import json
 from uc3m_travel import HotelManagementException
 from datetime import timedelta
+import os
+
 
 def read_data_from_json(fi, encoding="utf-8"):
     try:
@@ -12,8 +14,9 @@ def read_data_from_json(fi, encoding="utf-8"):
     except FileNotFoundError as e:
         raise HotelManagementException("The data file cannot be found.") from e
     except json.JSONDecodeError as e2:  # raise
-        raise HotelManagementException("The JSON does not have the expected structure.") from e2
+        data = []
     return data
+
 
 def guest_arrival(input_file):
     # check file exists
@@ -36,31 +39,35 @@ def guest_arrival(input_file):
     except AttributeError:
         raise HotelManagementException("The JSON does not have the expected structure.")
 
-    hotel_data = read_data_from_json(
-        "/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
-        "/hotel_stay_test_data.json")
+    current_dir = os.getcwd()
+    parent_dir = os.path.dirname(current_dir)
+    parent_dir = os.path.dirname(parent_dir)
+    adjacent_dir = os.path.join(parent_dir, 'data')
+    file_name = 'hotel_reservations.json'
+    file_path = os.path.join(adjacent_dir, file_name)
+    hotel_data = read_data_from_json(file_path)
     # check localizer exists in hotel_data, then that ID matches
     loc_found = False
     id_found = False
     for stay in hotel_data:
         if localizer == stay["Localizer"]:
             loc_found = True
-            if id_card == stay["idCard"]:
+            if id_card == stay["id_card"]:
                 id_found = True
                 # check if dates are right here
-                arrival = stay["arrival"]
+                arrival = stay["arrival_date"]
                 num_days = stay["num_days"]
                 arrival_date = datetime.strptime(arrival, "%d/%m/%Y")
                 current_datetime = datetime.now()
                 if current_datetime != arrival_date:
                     raise HotelManagementException("The arrival date does not correspond to the reservation date.")
-                current = HotelStay(id_card, localizer, num_days, stay["Type"])
+                current = HotelStay(id_card, localizer, num_days, stay["room_type"])
     if not id_found or not loc_found:
         raise HotelManagementException("The locator does not correspond to the stored data")
 
     # Creates a file that includes the data with all the processed stays.
-    current.write_to_file("/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
-                       "/hotel_stay_output.json")
+    write_file_path = os.path.join(adjacent_dir, 'hotel_stay_output.json')
+    current.write_to_file(write_file_path)
 
     # Returns hexadecimal string with the room key (HM-FR-02-O1)
     return current.hex_str
@@ -145,5 +152,17 @@ class HotelStay:
     def write_to_file(self, filename):
         """Write the HotelStay data to a JSON file."""
         data = self.to_dict()
+        try:
+            with open(filename, 'r') as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            print("this bit executed")
+            existing_data = []
+        except json.JSONDecodeError:
+            existing_data = []
+
+        print(existing_data)
+        existing_data.append(data)
+
         with open(filename, 'w') as f:
-            json.dump(data, f, indent=4)
+            json.dump(existing_data, f, indent=4)
