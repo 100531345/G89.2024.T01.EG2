@@ -4,6 +4,8 @@ import hashlib
 import json
 from uc3m_travel import HotelManagementException
 from datetime import timedelta
+import os
+
 
 def read_data_from_json(fi, encoding="utf-8"):
     try:
@@ -14,6 +16,7 @@ def read_data_from_json(fi, encoding="utf-8"):
     except json.JSONDecodeError as e2:  # raise
         raise HotelManagementException("The JSON does not have the expected structure.") from e2
     return data
+
 
 def guest_arrival(input_file):
     # check file exists
@@ -36,9 +39,13 @@ def guest_arrival(input_file):
     except AttributeError:
         raise HotelManagementException("The JSON does not have the expected structure.")
 
-    hotel_data = read_data_from_json(
-        "/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
-        "/hotel_stay_test_data.json")
+    current_dir = os.getcwd()
+    parent_dir = os.path.dirname(current_dir)
+    parent_dir = os.path.dirname(parent_dir)
+    adjacent_dir = os.path.join(parent_dir, 'data')
+    file_name = 'hotel_stay_test_data.json'
+    file_path = os.path.join(adjacent_dir, file_name)
+    hotel_data = read_data_from_json(file_path)
     # check localizer exists in hotel_data, then that ID matches
     loc_found = False
     id_found = False
@@ -59,8 +66,8 @@ def guest_arrival(input_file):
         raise HotelManagementException("The locator does not correspond to the stored data")
 
     # Creates a file that includes the data with all the processed stays.
-    current.write_to_file("/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
-                       "/hotel_stay_output.json")
+    write_file_path = os.path.join(adjacent_dir, 'hotel_stay_output.json')
+    current.write_to_file(write_file_path)
 
     # Returns hexadecimal string with the room key (HM-FR-02-O1)
     return current.hex_str
