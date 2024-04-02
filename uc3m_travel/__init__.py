@@ -7,4 +7,4 @@ from .hotel_reservation import HotelReservation
 from .hotel_manager import HotelManager
 from .hotel_manager import roomReservation
 from .hotel_stay import guest_arrival
-from .hotel_stay import read_data_from_json
+from .hotel_stay import readDataFromJson
