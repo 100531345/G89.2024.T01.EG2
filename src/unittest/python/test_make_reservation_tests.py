@@ -14,7 +14,7 @@ class TestRequestReservation(TestCase):
         current_dir = os.getcwd()
         parent_dir = os.path.dirname(current_dir)
         parent_dir = os.path.dirname(parent_dir)
-        adjacent_dir = os.path.join(parent_dir, 'data')
+        adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
         file_name = 'hotel_reservations.json'
         file_path = os.path.join(adjacent_dir, file_name)
         with open(file_path, 'w', encoding="utf-8") as f:

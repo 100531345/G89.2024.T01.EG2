@@ -60,7 +60,8 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
 
     current_dir = os.getcwd()
     parent_dir = os.path.dirname(current_dir)
-    adjacent_dir = os.path.join(parent_dir, 'data')
+    parent_dir = os.path.dirname(parent_dir)
+    adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
 
