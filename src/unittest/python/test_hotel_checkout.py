@@ -115,7 +115,12 @@ class TestHotelCheckout(TestCase):
         cwd = os.getcwd()
         parent_dir = os.path.dirname(cwd)
         parent_dir = os.path.dirname(parent_dir)
-        filename = os.path.join(parent_dir, "data", "check-outs.json")
+        parent_dir = os.path.dirname(parent_dir)
+
+        filename = os.path.join(parent_dir, "src", "main", "python","uc3m_travel","data","check"
+                                                                                         "-outs"
+                                                                                         ".json")
+
 
         with open(filename, "r", encoding="utf-8") as f:
             data = json.load(f)
