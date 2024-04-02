@@ -1,5 +1,7 @@
 [
   {
+    "name_surname": "John Doe",
+    "credit_card": "5555555555554444",
     "Localizer": "5eb63bbbe01eeed093cb22bb8f5acdc3",
     "Algorithm": "SHA-256",
     "Type": "SINGLE",
