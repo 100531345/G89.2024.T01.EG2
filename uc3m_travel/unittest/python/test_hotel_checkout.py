@@ -53,7 +53,6 @@ class TestHotelCheckout(TestCase):
 
         valid_sha256 = "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b"
 
-
         with self.assertRaises(HotelManagementException):
             HotelCheckout.validate_departure_date(valid_sha256)
 
@@ -65,8 +64,6 @@ class TestHotelCheckout(TestCase):
         valid_sha256 = "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b"
 
         self.assertEqual(True, HotelCheckout.guest_checkout(valid_sha256))
-
-
 
 
     # Tests that a invalid dep date and a valid room key returns False

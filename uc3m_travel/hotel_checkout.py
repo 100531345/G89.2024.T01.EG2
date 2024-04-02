@@ -1,13 +1,19 @@
 import json
+import os
 from datetime import datetime
 from uc3m_travel import HotelManagementException
+
 
 class HotelCheckout:
 
     @staticmethod
     def get_departure_date_room(room_key):
+
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        filename = os.path.join(script_dir, "data", "hotel_stay_output.json")
+
         try:
-            with open('/Users/matthewibrahim/Desktop/Study_abroad_classes/SoftDev/G89.2024.T01.EG2/uc3m_travel/data/hotel_stay_output.json') as f:
+            with open(filename) as f:
                 hotel_stay_output = json.load(f)
 
             for stay_info in hotel_stay_output:
@@ -18,8 +24,12 @@ class HotelCheckout:
 
     @staticmethod
     def validate_room_key(room_key):
+
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        filename = os.path.join(script_dir, "data", "hotel_stay_output.json")
+
         try:
-            with open('/Users/matthewibrahim/Desktop/Study_abroad_classes/SoftDev/G89.2024.T01.EG2/uc3m_travel/data/hotel_stay_output.json') as f:
+            with open(filename) as f:
                 hotel_stay_output = json.load(f)
 
             for stay_info in hotel_stay_output:
@@ -32,8 +42,12 @@ class HotelCheckout:
 
     @staticmethod
     def validate_departure_date(room_key):
+
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        filename = os.path.join(script_dir, "data", "hotel_stay_output.json")
+
         try:
-            with open('/Users/matthewibrahim/Desktop/Study_abroad_classes/SoftDev/G89.2024.T01.EG2/uc3m_travel/data/hotel_stay_output.json') as f:
+            with open(filename) as f:
                 hotel_stay_output = json.load(f)
 
             current_datetime = datetime.utcnow()
@@ -51,7 +65,9 @@ class HotelCheckout:
     @staticmethod
     def guest_checkout(room_key):
         try:
-            filename = "/Users/matthewibrahim/Desktop/Study_abroad_classes/SoftDev/G89.2024.T01.EG2/uc3m_travel/data/check-outs.json"
+
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            filename = os.path.join(script_dir, "data", "check-outs.json")
             timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
             with open(filename, "r+") as f:
