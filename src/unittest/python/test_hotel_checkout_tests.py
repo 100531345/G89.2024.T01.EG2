@@ -10,9 +10,8 @@ import os
 import unittest
 from unittest import TestCase, mock
 from freezegun import freeze_time
-
-from src.main.python.uc3m_travel import HotelManagementException
-from src.main.python.uc3m_travel.hotel_checkout import HotelCheckout
+from uc3m_travel.hotel_checkout import HotelCheckout
+from uc3m_travel.hotel_checkout import HotelManagementException
 
 
 class TestHotelCheckout(TestCase):

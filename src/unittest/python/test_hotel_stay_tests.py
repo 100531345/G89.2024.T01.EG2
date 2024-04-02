@@ -6,27 +6,26 @@ import json
 import tempfile
 import os
 from freezegun import freeze_time
-from src.main.python.uc3m_travel.hotel_manager import roomReservation
-from src.main.python.uc3m_travel.hotel_stay import guestArrival
+
+from uc3m_travel.hotel_manager import roomReservation
+from uc3m_travel.hotel_stay import guestArrival
+from uc3m_travel.hotel_checkout import HotelCheckout
 from src.main.python.uc3m_travel.hotel_management_exception import HotelManagementException
-
-from src.main.python.uc3m_travel.hotel_checkout import HotelCheckout
-
 
 class TestStayHotel(TestCase):
     """Class for hotel_stay tests"""
 
     def setUp(self):
         full_data = [{
-        "id_card": "12345678Z",
-        "name_surname": "JOSE LOPEZ",
-        "credit_card": 5555555555554444,
-        "phone_number:": 911234567,
-        "arrival_date": "01/04/2024",
-        "num_days": 2,
-        "room_type": "SINGLE",
-        "Localizer": "e3778b02fa0ada33f9202203acb054d5"
-    }]
+            "id_card": "12345678Z",
+            "name_surname": "JOSE LOPEZ",
+            "credit_card": 5555555555554444,
+            "phone_number:": 911234567,
+            "arrival_date": "01/04/2024",
+            "num_days": 2,
+            "room_type": "SINGLE",
+            "Localizer": "e3778b02fa0ada33f9202203acb054d5"
+        }]
         current_dir = os.getcwd()
         parent_dir = os.path.dirname(current_dir)
         parent_dir = os.path.dirname(parent_dir)
@@ -1068,16 +1067,14 @@ class TestCombinations(TestCase):
 
     @freeze_time("2024-4-01")
     def test_func_one_and_two_three(self):
-
         "Test for hotel_stay file"
         localizer = roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                         "01/04/2024", 2)
+                                    "01/04/2024", 2)
 
         valid_json = json.dumps({"Localizer": localizer, "IdCard": "12345678Z"})
 
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
             temp_file.write(valid_json)
-
 
         result = guestArrival(temp_file.name)
 
