@@ -4,6 +4,7 @@ import json
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelReservation
 from stdnum.es import nif
+import os
 
 VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
@@ -53,15 +54,21 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
 
     #do some checking in the file to make sure name name_surname doesn't exist
     #this would mean the client already has a reservation
-    hotel_data = HotelManager.read_data_from_json(
-        "/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
-        "/hotel_stay_test_data.json")
+
+    current_dir = os.getcwd()
+    parent_dir = os.path.dirname(current_dir)
+    parent_dir = os.path.dirname(parent_dir)
+    adjacent_dir = os.path.join(parent_dir, 'data')
+    file_name = 'hotel_stay_test_data.json'
+    file_path = os.path.join(adjacent_dir, file_name)
+    hotel_data = HotelManager.read_data_from_json(file_path)
+
     for res in hotel_data:
         if res["name_surname"] == name_surname:
             raise HotelManagementException("There is already a reservation for this customer")
 
-    reservation.write_to_file("/Users/connorloughlin/Documents/PycharmProjects/G89.2024.T01.EG2TWO/uc3m_travel/data"
-        "/hotel_stay_test_data.json")
+    write_file_path = os.path.join(adjacent_dir, 'hotel_stay_output.json')
+    reservation.write_to_file(write_file_path)
 
 
     return "function not implemented"
