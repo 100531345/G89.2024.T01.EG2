@@ -8,7 +8,7 @@ from stdnum.es import nif
 VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
 
-def request_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival,
+def room_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival,
                         num_days):
     if not isinstance(credit_card_number, int) or len(
             str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(
@@ -47,6 +47,7 @@ def request_reservation(credit_card_number, id_card, name_surname, phone_number,
         'num_days': num_days,
     }
     reservation = HotelReservation(data)
+    localizer = reservation.localizer()
 
     return "function not implemented"
 
