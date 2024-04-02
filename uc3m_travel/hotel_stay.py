@@ -66,6 +66,9 @@ def guest_arrival(input_file):
     return current.hex_str
 
 
+
+
+
 class HotelStay:
     """Custom class for hotel stays."""
 
