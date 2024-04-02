@@ -3,7 +3,7 @@
 import json
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelReservation
-import stdnum
+from stdnum.es import nif
 
 VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
@@ -14,7 +14,7 @@ def request_reservation(credit_card_number, id_card, name_surname, phone_number,
             str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(
             credit_card_number):
         raise HotelManagementException("bad credit card number")
-    if not isinstance(id_card, str) or len(id_card) != 9:  # still need to add nif alg compliance and check length
+    if not isinstance(id_card, str) or len(id_card) != 9 or not nif.is_valid(id_card):  # still need to add nif alg compliance and check length
         raise HotelManagementException("bad id card")
     if not isinstance(name_surname, str) or len(name_surname) < 10 or len(name_surname) > 50:
         raise HotelManagementException("bad name surname")
