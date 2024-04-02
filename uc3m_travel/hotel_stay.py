@@ -156,12 +156,10 @@ class HotelStay:
             with open(filename, 'r') as f:
                 existing_data = json.load(f)
         except FileNotFoundError:
-            print("this bit executed")
             existing_data = []
         except json.JSONDecodeError:
             existing_data = []
 
-        print(existing_data)
         existing_data.append(data)
 
         with open(filename, 'w') as f:
