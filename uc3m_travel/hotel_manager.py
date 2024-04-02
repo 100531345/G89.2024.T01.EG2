@@ -67,7 +67,7 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
         if res["name_surname"] == name_surname:
             raise HotelManagementException("There is already a reservation for this customer")
 
-    write_file_path = os.path.join(adjacent_dir, 'hotel_stay_test_data.json')
+    write_file_path = os.path.join(adjacent_dir, 'hotel_reservations.json')
     reservation.write_to_file(write_file_path)
 
     return reservation.localizer
