@@ -110,36 +110,6 @@ class HotelManager:
         # The number is valid if the total is a multiple of 10
         return total % 10 == 0
 
-    # def readDataFromJson(self, fi, encoding="utf-8"):
-    #     """Reads data from JSON with specified encoding."""
-    #     try:
-    #         with open(fi, encoding=encoding) as f:
-    #             data = json.load(f)
-    #     except FileNotFoundError as e:
-    #         raise HotelManagementException("Wrong file or file path") from e
-    #     except json.JSONDecodeError as e:
-    #         raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from e
-    #
-    #     try:
-    #         c = data["CreditCard"]
-    #         p = data["phoneNumber"]
-    #         res_data = {
-    #             'idCard': '12345678Z',
-    #             'creditCardNumber': c,
-    #             'name_and_sur': 'John Doe',
-    #             'phone_num': p,
-    #             'roomType': 'single',
-    #             'numDays': 3
-    #         }
-    #         req = HotelReservation(res_data)
-    #     except KeyError as e:
-    #         raise HotelManagementException("JSON Decode Error - Invalid JSON Key") from e
-    #     if not self.validate_credit_card(c):
-    #         raise HotelManagementException("Invalid credit card number")
-    #
-    #     # Close the file
-    #     return req
-
     @staticmethod
     def read_data_from_json(fi, encoding="utf-8"):
         try:

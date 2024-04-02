@@ -19,8 +19,8 @@ def readDataFromJson(fi, encoding="utf-8"):
     return data
 
 
-def guest_arrival(inputFile):
-    # check file exists
+def guestArrival(inputFile):
+    """check file exists"""
     try:
         with open(inputFile, encoding="utf-8", mode='r') as f:
             data = json.load(f)
@@ -37,8 +37,8 @@ def guest_arrival(inputFile):
         id_card = data.get("IdCard")
         if not isinstance(id_card, str) or not isinstance(localizer, str):
             raise HotelManagementException("The JSON data does not have valid values.")
-    except AttributeError:
-        raise HotelManagementException("The JSON does not have the expected structure.")
+    except AttributeError as esc:
+        raise HotelManagementException("The JSON does not have the expected structure.") from esc
 
     current_dir = os.getcwd()
     parent_dir = os.path.dirname(current_dir)
@@ -57,12 +57,12 @@ def guest_arrival(inputFile):
                 id_found = True
                 # check if dates are right here
                 arrival = stay["arrival_date"]
-                numDays = stay["num_days"]
+                num_days = stay["num_days"]
                 arrival_date = datetime.strptime(arrival, "%d/%m/%Y")
                 current_datetime = datetime.now()
                 if current_datetime != arrival_date:
                     raise HotelManagementException("The arrival date does not correspond to the reservation date.")
-                current = HotelStay(id_card, localizer, numDays, stay["room_type"])
+                current = HotelStay(id_card, localizer, num_days, stay["room_type"])
     if not id_found or not loc_found:
         raise HotelManagementException("The locator does not correspond to the stored data")
 
@@ -154,7 +154,7 @@ class HotelStay:
         """Write the HotelStay data to a JSON file."""
         data = self.to_dict()
         try:
-            with open(filename, 'r') as f:
+            with open(filename, 'r', encoding="utf-8") as f:
                 existing_data = json.load(f)
         except FileNotFoundError:
             existing_data = []
@@ -163,5 +163,5 @@ class HotelStay:
 
         existing_data.append(data)
 
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding="utf-8") as f:
             json.dump(existing_data, f, indent=4)

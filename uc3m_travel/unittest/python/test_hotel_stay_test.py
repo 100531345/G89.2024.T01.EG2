@@ -7,7 +7,7 @@ import tempfile
 import os
 from freezegun import freeze_time
 from uc3m_travel.hotel_manager import roomReservation
-from uc3m_travel.hotel_stay import guest_arrival
+from uc3m_travel.hotel_stay import guestArrival
 from uc3m_travel.hotel_management_exception import HotelManagementException
 
 
@@ -15,7 +15,16 @@ class TestStayHotel(TestCase):
     """Class for hotel_stay tests"""
 
     def setUp(self):
-        full_data = []
+        full_data = [{
+        "id_card": "12345678Z",
+        "name_surname": "JOSE LOPEZ",
+        "credit_card": 5555555555554444,
+        "phone_number:": 911234567,
+        "arrival_date": "01/04/2024",
+        "num_days": 2,
+        "room_type": "SINGLE",
+        "Localizer": "e3778b02fa0ada33f9202203acb054d5"
+    }]
         current_dir = os.getcwd()
         parent_dir = os.path.dirname(current_dir)
         parent_dir = os.path.dirname(parent_dir)
@@ -33,7 +42,7 @@ class TestStayHotel(TestCase):
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
             temp_file.write(valid_json)
 
-        result = guest_arrival(temp_file.name)
+        result = guestArrival(temp_file.name)
         self.assertEqual(
             "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b",
             result)
@@ -48,7 +57,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException) as message:
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         expected_error_message = "The file is not in JSON format."
         self.assertEqual(str(message.exception), expected_error_message)
@@ -64,7 +73,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -77,7 +86,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -90,7 +99,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -103,7 +112,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -116,7 +125,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -129,7 +138,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException) as message:
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         expected_error_message = "The JSON data does not have valid values."
         self.assertEqual(str(message.exception), expected_error_message)
@@ -146,7 +155,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -159,7 +168,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -172,7 +181,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -185,7 +194,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -198,7 +207,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -211,7 +220,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -224,7 +233,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -237,7 +246,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -250,7 +259,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -263,7 +272,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -276,7 +285,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -289,7 +298,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -302,7 +311,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -315,7 +324,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -328,7 +337,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -341,7 +350,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -354,7 +363,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -367,7 +376,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -380,7 +389,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -393,7 +402,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -406,7 +415,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -419,7 +428,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -432,7 +441,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -445,7 +454,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -458,7 +467,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -471,7 +480,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -484,7 +493,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -497,7 +506,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -510,7 +519,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -523,7 +532,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -536,7 +545,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -549,7 +558,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -562,7 +571,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -575,7 +584,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -588,7 +597,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -601,7 +610,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -614,7 +623,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -627,7 +636,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -640,7 +649,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -653,7 +662,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException) as message:
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         expected_error_message = "The locator does not correspond to the stored data"
         self.assertEqual(expected_error_message, str(message.exception))
@@ -669,7 +678,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -682,7 +691,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -695,7 +704,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -708,7 +717,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -721,7 +730,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -734,7 +743,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -747,7 +756,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -760,7 +769,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -773,7 +782,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -786,7 +795,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -799,7 +808,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -812,7 +821,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -825,7 +834,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -838,7 +847,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -851,7 +860,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -864,7 +873,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -877,7 +886,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -889,7 +898,7 @@ class TestStayHotel(TestCase):
             temp_file.write(invalid_json)
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -902,7 +911,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -915,7 +924,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -928,7 +937,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -941,7 +950,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -954,7 +963,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -967,7 +976,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -980,7 +989,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -993,7 +1002,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -1006,7 +1015,7 @@ class TestStayHotel(TestCase):
 
         # Test if the function raises the expected exception
         with self.assertRaises(HotelManagementException):
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         os.unlink(temp_file.name)
 
@@ -1019,7 +1028,7 @@ class TestStayHotel(TestCase):
             temp_file.write(valid_json)
 
         with self.assertRaises(HotelManagementException) as message:
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         expected_error_message = "The arrival date does not correspond to the reservation date."
         self.assertEqual(expected_error_message, str(message.exception))
@@ -1034,7 +1043,7 @@ class TestStayHotel(TestCase):
             temp_file.write(valid_json)
 
         with self.assertRaises(HotelManagementException) as message:
-            guest_arrival(temp_file.name)
+            guestArrival(temp_file.name)
 
         expected_error_message = "The arrival date does not correspond to the reservation date."
         self.assertEqual(expected_error_message, str(message.exception))
@@ -1066,7 +1075,7 @@ class TestCombinations(TestCase):
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
             temp_file.write(valid_json)
 
-        result = guest_arrival(temp_file.name)
+        result = guestArrival(temp_file.name)
         self.assertEqual(
             "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b",
             result)
