@@ -8,5 +8,15 @@
     "idCard": "12345678Z",
     "arrival": "01/04/2024",
     "num_days": "3"
+  },
+  {
+    "name_surname": "Alex Doe",
+    "credit_card": "5555555555554444",
+    "Localizer": "5eb63bbte01eeed093cb22bb8f5acdc3",
+    "Algorithm": "SHA-256",
+    "Type": "SINGLE",
+    "idCard": "12345678Z",
+    "arrival": "01/04/2024",
+    "num_days": "3"
   }
 ]
