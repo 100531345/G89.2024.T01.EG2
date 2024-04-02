@@ -2,12 +2,13 @@
 from datetime import datetime
 import hashlib
 import json
-from uc3m_travel import HotelManagementException
 from datetime import timedelta
 import os
+from uc3m_travel import HotelManagementException
 
 
-def read_data_from_json(fi, encoding="utf-8"):
+
+def readDataFromJson(fi, encoding="utf-8"):
     try:
         with open(fi, encoding=encoding, mode='r') as f_base:
             data = json.load(f_base)
@@ -18,10 +19,10 @@ def read_data_from_json(fi, encoding="utf-8"):
     return data
 
 
-def guest_arrival(input_file):
+def guest_arrival(inputFile):
     # check file exists
     try:
-        with open(input_file, encoding="utf-8", mode='r') as f:
+        with open(inputFile, encoding="utf-8", mode='r') as f:
             data = json.load(f)
     except FileNotFoundError as e:
         raise HotelManagementException("The data file cannot be found.") from e
@@ -45,7 +46,7 @@ def guest_arrival(input_file):
     adjacent_dir = os.path.join(parent_dir, 'data')
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
-    hotel_data = read_data_from_json(file_path)
+    hotel_data = readDataFromJson(file_path)
     # check localizer exists in hotel_data, then that ID matches
     loc_found = False
     id_found = False
