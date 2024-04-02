@@ -11,7 +11,6 @@ import os
 
 
 class TestRequestReservation(TestCase):
-
     def test_request_TC1(self):
         self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                    "01/07/2024", 2))
@@ -56,7 +55,7 @@ class TestRequestReservation(TestCase):
 
     def test_request_TC10(self):
 
-        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                    "6/14/24", 2))
 
     def test_request_TC11(self):
@@ -76,7 +75,7 @@ class TestRequestReservation(TestCase):
     def test_request_TC14(self):
 
         self.assertEqual(HotelManagementException,
-                         request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                         room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                              "6/14/24", 2))
 
 
@@ -97,15 +96,15 @@ class TestRequestReservation(TestCase):
 
     def test_request_TC18(self):
 
-        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                    "6/14/24", 2))
 
     def test_request_TC19(self):
-        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "DOUBLE",
+        self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "DOUBLE",
                                                    "6/14/24", 2))
 
     def test_request_TC20(self):
-        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "TRIPLE",
+        self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "TRIPLE",
                                                    "6/14/24", 2))
 
 
@@ -120,7 +119,7 @@ class TestRequestReservation(TestCase):
                                               2)
 
     def test_request_TC23(self):
-        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                    "6/14/24", 2))
 
     def test_request_TC24(self):
@@ -159,13 +158,9 @@ class TestRequestReservation(TestCase):
                                               "01/01/20000", 2)
 
     def test_request_TC31(self):
-<<<<<<< HEAD
-        self.assertEquals(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                                                    "01/07/2024", 5))
-=======
-        self.assertEqual(True, request_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+
+        self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                    "6/14/24", 5))
->>>>>>> d218cc2c25dcc1ddb28bfff4301d4d2f19bcc018
 
     def test_request_TC32(self):
         self.assertRaisesRegexp(HotelManagementException,"bad num days",
