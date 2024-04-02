@@ -8,6 +8,8 @@ import json
 import tempfile
 import os
 
+from uc3m_travel.hotel_checkout import HotelCheckout
+
 
 class TestRequestReservation(TestCase):
     def setUp(self):
@@ -1135,7 +1137,7 @@ class TestStayHotel(TestCase):
 
 class TestRequestReservation(TestCase):
     @freeze_time("2024-4-01")
-    def test_func_one_and_two(self):
+    def test_func_one_and_two_three(self):
         localizer = room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                          "01/04/2024", 2)
 
@@ -1145,7 +1147,14 @@ class TestRequestReservation(TestCase):
             temp_file.write(valid_json)
 
         result = guest_arrival(temp_file.name)
+
         self.assertEqual(
             "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b",
             result)
         os.unlink(temp_file.name)
+
+        with freeze_time("2024-04-03"):
+            func3_res = HotelCheckout.guest_checkout(
+                "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b")
+
+            self.assertEqual(True, func3_res)
