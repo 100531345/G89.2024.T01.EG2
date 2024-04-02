@@ -1,8 +1,8 @@
 """ Class HotelStay (GE2.2) """
 from datetime import datetime
+from datetime import timedelta
 import hashlib
 import json
-from datetime import timedelta
 import os
 from uc3m_travel import HotelManagementException
 
@@ -57,12 +57,12 @@ def guest_arrival(inputFile):
                 id_found = True
                 # check if dates are right here
                 arrival = stay["arrival_date"]
-                num_days = stay["num_days"]
+                numDays = stay["num_days"]
                 arrival_date = datetime.strptime(arrival, "%d/%m/%Y")
                 current_datetime = datetime.now()
                 if current_datetime != arrival_date:
                     raise HotelManagementException("The arrival date does not correspond to the reservation date.")
-                current = HotelStay(id_card, localizer, num_days, stay["room_type"])
+                current = HotelStay(id_card, localizer, numDays, stay["room_type"])
     if not id_found or not loc_found:
         raise HotelManagementException("The locator does not correspond to the stored data")
 
@@ -80,16 +80,16 @@ def guest_arrival(inputFile):
 class HotelStay:
     """Custom class for hotel stays."""
 
-    def __init__(self, idcard, localizer, num_days, room_type):
+    def __init__(self, idcard, localizer, numDays, roomType):
         self.__alg = "SHA-256"
-        self.__type = room_type
+        self.__type = roomType
         self.__idcard = idcard
         self.__localizer = localizer
         justnow = datetime.utcnow()
         self.__arrival = justnow
         # timestamp is represented in seconds.miliseconds
         # to add the number of days we must express numdays in seconds
-        self.departure = self.__arrival + timedelta(days=int(num_days))
+        self.departure = self.__arrival + timedelta(days=int(numDays))
         self.hex_str = hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     def __signature_string(self):
