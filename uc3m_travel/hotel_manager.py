@@ -1,59 +1,60 @@
 """Module: hotel_manager.py"""
-
 import json
+import os
+from stdnum.es import nif
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelReservation
-from stdnum.es import nif
-import os
-
-VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
 
-def room_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival,
-                        num_days):
-    if not isinstance(credit_card_number, int) or len(
-            str(abs(credit_card_number))) != 16 or not HotelManager.validate_credit_card(
-            credit_card_number):
+VALID_roomTypeS = ["SINGLE", "DOUBLE", "TRIPLE"]
+
+
+def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType, arrival,
+                        numDays):
+    """function1 of the assignment"""
+    if not isinstance(creditCardNumber, int) or len(
+            str(abs(creditCardNumber))) != 16 or not HotelManager.validate_credit_card(
+            creditCardNumber):
         raise HotelManagementException("bad credit card number")
-    if not isinstance(id_card, str) or len(id_card) != 9 or not nif.is_valid(id_card):  # still need to add nif alg compliance and check length
+    if not isinstance(idCard, str) or len(idCard) != 9 or not nif.is_valid(idCard):  # still need to add nif alg compliance and check length
         raise HotelManagementException("bad id card")
-    if not isinstance(name_surname, str) or len(name_surname) < 10 or len(name_surname) > 50:
+    if not isinstance(nameSurname, str) or len(nameSurname) < 10 or len(nameSurname) > 50:
         raise HotelManagementException("bad name surname")
-    names_list = name_surname.split(" ")
+    names_list = nameSurname.split(" ")
     if not len(names_list) == 2:
         raise HotelManagementException("bad name surname")
-    if not isinstance(phone_number, int) or len(str(phone_number)) != 9:
+    if not isinstance(phoneNumber, int) or len(str(phoneNumber)) != 9:
         raise HotelManagementException("bad phone number")
-    if not isinstance(room_type, str) or room_type not in VALID_ROOM_TYPES:
+    if not isinstance(roomType, str) or roomType not in VALID_roomTypeS:
         raise HotelManagementException("bad room type")
     if not isinstance(arrival, str) or len(
             arrival) != 10:  # add the rest of the checks about valid dates
         raise HotelManagementException("bad arrival")
-    arrival = arrival.split("/")
-    if len(arrival) != 3 or len(arrival[0]) != 2 or len(arrival[1]) != 2 or len(arrival[2]) != 4:
+    arrival_list = arrival.split("/")
+    if len(arrival_list) != 3 or len(arrival_list[0]) != 2 or len(arrival_list[1]) != 2 or len(arrival_list[2]) != 4:
         raise HotelManagementException("bad arrival")
-    for i in range(len(arrival)):
+    for i in range(len(arrival_list)):
         try:
-            arrival[i] = int(arrival[i])
+            arrival_list[i] = int(arrival_list[i])
         except:
             raise HotelManagementException("bad arrival")
-    if arrival[0] < 1 or arrival[0] > 31 or arrival [1] < 1 or arrival[1] > 12:
+    if arrival_list[0] < 1 or arrival_list[0] > 31 or arrival_list[1] < 1 or arrival_list[1] > 12:
         raise HotelManagementException("bad arrival")
-    if not isinstance(num_days, int) or num_days < 1 or num_days > 10:
+    if not isinstance(numDays, int) or numDays < 1 or numDays > 10:
         raise HotelManagementException("bad num days")
 
     data = {
-        'credit_card_number': credit_card_number,
-        'id_card': id_card,
-        'name_and_sur': name_surname,
-        'phone_num': phone_number,
-        'room_type': room_type,
-        'num_days': num_days,
+        'credit_card_number': creditCardNumber,
+        'id_card': idCard,
+        'name_and_sur': nameSurname,
+        'phone_num': phoneNumber,
+        'room_type': roomType,
+        'num_days': numDays,
+        'arrival': arrival
     }
     reservation = HotelReservation(data)
-    localizer = reservation.localizer
 
-    #do some checking in the file to make sure name name_surname doesn't exist
+    #do some checking in the file to make sure name nameSurname doesn't exist
     #this would mean the client already has a reservation
 
     current_dir = os.getcwd()
@@ -63,9 +64,9 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
 
-    hotel_data = HotelManager.read_data_from_json(file_path)
+    hotel_data = HotelManager.readDataFromJson(file_path)
     for res in hotel_data:
-        if res["name_surname"] == name_surname:
+        if res["name_surname"] == nameSurname:
             raise HotelManagementException("There is already a reservation for this customer")
 
     write_file_path = os.path.join(adjacent_dir, 'hotel_reservations.json')
@@ -108,7 +109,7 @@ class HotelManager:
         # The number is valid if the total is a multiple of 10
         return total % 10 == 0
 
-    # def read_data_from_json(self, fi, encoding="utf-8"):
+    # def readDataFromJson(self, fi, encoding="utf-8"):
     #     """Reads data from JSON with specified encoding."""
     #     try:
     #         with open(fi, encoding=encoding) as f:
@@ -122,12 +123,12 @@ class HotelManager:
     #         c = data["CreditCard"]
     #         p = data["phoneNumber"]
     #         res_data = {
-    #             'id_card': '12345678Z',
-    #             'credit_card_number': c,
+    #             'idCard': '12345678Z',
+    #             'creditCardNumber': c,
     #             'name_and_sur': 'John Doe',
     #             'phone_num': p,
-    #             'room_type': 'single',
-    #             'num_days': 3
+    #             'roomType': 'single',
+    #             'numDays': 3
     #         }
     #         req = HotelReservation(res_data)
     #     except KeyError as e:
@@ -139,12 +140,12 @@ class HotelManager:
     #     return req
 
     @staticmethod
-    def read_data_from_json(fi, encoding="utf-8"):
+    def readDataFromJson(fi, encoding="utf-8"):
         try:
             with open(fi, encoding=encoding, mode='r') as f_base:
                 data = json.load(f_base)
         except FileNotFoundError as e:
             raise HotelManagementException("The data file cannot be found.") from e
-        except json.JSONDecodeError as e2:  # raise
+        except json.JSONDecodeError:  # raise
             data = []
         return data
