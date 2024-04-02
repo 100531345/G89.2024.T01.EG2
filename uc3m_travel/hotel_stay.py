@@ -52,16 +52,16 @@ def guest_arrival(input_file):
     for stay in hotel_data:
         if localizer == stay["Localizer"]:
             loc_found = True
-            if id_card == stay["idCard"]:
+            if id_card == stay["id_card"]:
                 id_found = True
                 # check if dates are right here
-                arrival = stay["arrival"]
+                arrival = stay["arrival_date"]
                 num_days = stay["num_days"]
                 arrival_date = datetime.strptime(arrival, "%d/%m/%Y")
                 current_datetime = datetime.now()
                 if current_datetime != arrival_date:
                     raise HotelManagementException("The arrival date does not correspond to the reservation date.")
-                current = HotelStay(id_card, localizer, num_days, stay["Type"])
+                current = HotelStay(id_card, localizer, num_days, stay["room_type"])
     if not id_found or not loc_found:
         raise HotelManagementException("The locator does not correspond to the stored data")
 
@@ -154,6 +154,8 @@ class HotelStay:
                 existing_data = json.load(f)
         except FileNotFoundError:
             print("this bit executed")
+            existing_data = []
+        except json.JSONDecodeError:
             existing_data = []
 
         print(existing_data)

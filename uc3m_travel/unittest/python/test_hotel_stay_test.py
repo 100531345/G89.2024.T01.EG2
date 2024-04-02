@@ -1119,9 +1119,10 @@ class TestStayHotel(TestCase):
 
 
 class TestRequestReservation(TestCase):
+    @freeze_time("2024-4-01")
     def test_func_one_and_two(self):
         localizer = room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
-                         "01/07/2024", 2)
+                         "01/04/2024", 2)
 
         valid_json = json.dumps({"Localizer": localizer, "IdCard": "12345678Z"})
 
@@ -1130,6 +1131,6 @@ class TestRequestReservation(TestCase):
 
         result = guest_arrival(temp_file.name)
         self.assertEqual(
-            "0da54330cafe260e91643305780e4a60483a93263bb18ec5262119ed152f86ce",
+            "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b",
             result)
         os.unlink(temp_file.name)

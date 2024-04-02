@@ -12,7 +12,7 @@ class HotelReservation:
     def __init__(self, data):
         self.__idcard = data.get('id_card')
         justnow = datetime.utcnow()
-        self.__arrival = datetime.timestamp(justnow)
+        self.__arrival = justnow.strftime("%d/%m/%Y")
         self.__name_surname = data.get('name_and_sur')
         self.__phone_number = data.get('phone_num')
         self.__room_type = data.get('room_type')
@@ -69,7 +69,18 @@ class HotelReservation:
                 }
 
     def write_to_file(self, filename):
-        """custom Write the HotelReservation data to a JSON file."""
+        """Write the HotelStay data to a JSON file."""
         data = self.to_dict()
-        with open(filename, encoding="utf-8", mode='w') as f:
-            json.dump(data, f, indent=4)
+        try:
+            with open(filename, 'r') as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            existing_data = []
+        except json.JSONDecodeError:
+            existing_data = []
+
+        print(existing_data)
+        existing_data.append(data)
+
+        with open(filename, 'w') as f:
+            json.dump(existing_data, f, indent=4)
