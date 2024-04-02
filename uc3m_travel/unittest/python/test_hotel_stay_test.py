@@ -1123,7 +1123,7 @@ class TestRequestReservation(TestCase):
         localizer = room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                          "01/07/2024", 2)
 
-        valid_json = '{"Localizer": ' + localizer + ',"IdCard":"12345678Z"}'
+        valid_json = json.dumps({"Localizer": localizer, "IdCard": "12345678Z"})
 
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
             temp_file.write(valid_json)

@@ -14,7 +14,7 @@ def read_data_from_json(fi, encoding="utf-8"):
     except FileNotFoundError as e:
         raise HotelManagementException("The data file cannot be found.") from e
     except json.JSONDecodeError as e2:  # raise
-        raise HotelManagementException("The JSON does not have the expected structure.") from e2
+        data = []
     return data
 
 
