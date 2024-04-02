@@ -33,11 +33,12 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
     arrival_list = arrival.split("/")
     if len(arrival_list) != 3 or len(arrival_list[0]) != 2 or len(arrival_list[1]) != 2 or len(arrival_list[2]) != 4:
         raise HotelManagementException("bad arrival")
-    for i in range(len(arrival_list)):
+    for idx, arr in enumerate(arrival_list):
         try:
-            arrival_list[i] = int(arrival_list[i])
-        except:
-            raise HotelManagementException("bad arrival")
+            arrival_list[idx] = int(arr)
+        except Exception as exc:
+            raise HotelManagementException("bad arrival") from exc
+
     if arrival_list[0] < 1 or arrival_list[0] > 31 or arrival_list[1] < 1 or arrival_list[1] > 12:
         raise HotelManagementException("bad arrival")
     if not isinstance(numDays, int) or numDays < 1 or numDays > 10:
@@ -64,7 +65,7 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
 
-    hotel_data = HotelManager.readDataFromJson(file_path)
+    hotel_data = HotelManager.read_data_from_json(file_path)
     for res in hotel_data:
         if res["name_surname"] == nameSurname:
             raise HotelManagementException("There is already a reservation for this customer")
@@ -109,38 +110,8 @@ class HotelManager:
         # The number is valid if the total is a multiple of 10
         return total % 10 == 0
 
-    # def readDataFromJson(self, fi, encoding="utf-8"):
-    #     """Reads data from JSON with specified encoding."""
-    #     try:
-    #         with open(fi, encoding=encoding) as f:
-    #             data = json.load(f)
-    #     except FileNotFoundError as e:
-    #         raise HotelManagementException("Wrong file or file path") from e
-    #     except json.JSONDecodeError as e:
-    #         raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from e
-    #
-    #     try:
-    #         c = data["CreditCard"]
-    #         p = data["phoneNumber"]
-    #         res_data = {
-    #             'idCard': '12345678Z',
-    #             'creditCardNumber': c,
-    #             'name_and_sur': 'John Doe',
-    #             'phone_num': p,
-    #             'roomType': 'single',
-    #             'numDays': 3
-    #         }
-    #         req = HotelReservation(res_data)
-    #     except KeyError as e:
-    #         raise HotelManagementException("JSON Decode Error - Invalid JSON Key") from e
-    #     if not self.validate_credit_card(c):
-    #         raise HotelManagementException("Invalid credit card number")
-    #
-    #     # Close the file
-    #     return req
-
     @staticmethod
-    def readDataFromJson(fi, encoding="utf-8"):
+    def read_data_from_json(fi, encoding="utf-8"):
         try:
             with open(fi, encoding=encoding, mode='r') as f_base:
                 data = json.load(f_base)

@@ -1,8 +1,8 @@
 """ Class HotelStay (GE2.2) """
 from datetime import datetime
+from datetime import timedelta
 import hashlib
 import json
-from datetime import timedelta
 import os
 from uc3m_travel import HotelManagementException
 
@@ -19,8 +19,8 @@ def readDataFromJson(fi, encoding="utf-8"):
     return data
 
 
-def guest_arrival(inputFile):
-    # check file exists
+def guestArrival(inputFile):
+    """check file exists"""
     try:
         with open(inputFile, encoding="utf-8", mode='r') as f:
             data = json.load(f)
@@ -37,8 +37,8 @@ def guest_arrival(inputFile):
         id_card = data.get("IdCard")
         if not isinstance(id_card, str) or not isinstance(localizer, str):
             raise HotelManagementException("The JSON data does not have valid values.")
-    except AttributeError:
-        raise HotelManagementException("The JSON does not have the expected structure.")
+    except AttributeError as esc:
+        raise HotelManagementException("The JSON does not have the expected structure.") from esc
 
     current_dir = os.getcwd()
     parent_dir = os.path.dirname(current_dir)
@@ -80,16 +80,16 @@ def guest_arrival(inputFile):
 class HotelStay:
     """Custom class for hotel stays."""
 
-    def __init__(self, idcard, localizer, num_days, room_type):
+    def __init__(self, idcard, localizer, numDays, roomType):
         self.__alg = "SHA-256"
-        self.__type = room_type
+        self.__type = roomType
         self.__idcard = idcard
         self.__localizer = localizer
         justnow = datetime.utcnow()
         self.__arrival = justnow
         # timestamp is represented in seconds.miliseconds
         # to add the number of days we must express numdays in seconds
-        self.departure = self.__arrival + timedelta(days=int(num_days))
+        self.departure = self.__arrival + timedelta(days=int(numDays))
         self.hex_str = hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     def __signature_string(self):
@@ -154,7 +154,7 @@ class HotelStay:
         """Write the HotelStay data to a JSON file."""
         data = self.to_dict()
         try:
-            with open(filename, 'r') as f:
+            with open(filename, 'r', encoding="utf-8") as f:
                 existing_data = json.load(f)
         except FileNotFoundError:
             existing_data = []
@@ -163,5 +163,5 @@ class HotelStay:
 
         existing_data.append(data)
 
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding="utf-8") as f:
             json.dump(existing_data, f, indent=4)
