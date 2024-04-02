@@ -21,6 +21,9 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
         raise HotelManagementException("bad id card")
     if not isinstance(name_surname, str) or len(name_surname) < 10 or len(name_surname) > 50:
         raise HotelManagementException("bad name surname")
+    names_list = name_surname.split(" ")
+    if not len(names_list) == 2:
+        raise HotelManagementException("bad name surname")
     if not isinstance(phone_number, int) or len(str(phone_number)) != 9:
         raise HotelManagementException("bad phone number")
     if not isinstance(room_type, str) or room_type not in VALID_ROOM_TYPES:

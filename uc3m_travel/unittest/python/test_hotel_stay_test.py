@@ -10,6 +10,17 @@ import os
 
 
 class TestRequestReservation(TestCase):
+    def setUp(self):
+        print("fjkdslapjfkle;ajfkld;sajkfldsa;j")
+        empty_data = []
+        current_dir = os.getcwd()
+        parent_dir = os.path.dirname(current_dir)
+        parent_dir = os.path.dirname(parent_dir)
+        adjacent_dir = os.path.join(parent_dir, 'data')
+        file_name = 'hotel_reservations.json'
+        file_path = os.path.join(adjacent_dir, file_name)
+        with open(file_path, 'w') as f:
+            json.dump(empty_data, f, indent=4)
     def test_request_TC1(self):
         self.assertEqual(True, room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 2))
@@ -176,6 +187,10 @@ class TestRequestReservation(TestCase):
                                 room_reservation, 5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                 "01/07/2024", 11)
 
+    def test_request_TC35(self):
+        self.assertRaisesRegexp(HotelManagementException, "bad credit name surname",
+                                room_reservation, 5555555555554444, "12345678Z", "JOSELOPEZ", 911234567, "SINGLE",
+                                "01/07/2024", 2)
 
 class TestStayHotel(TestCase):
 
