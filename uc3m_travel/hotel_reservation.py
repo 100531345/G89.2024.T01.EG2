@@ -2,6 +2,7 @@
 
 import hashlib
 from datetime import datetime
+import json
 
 #this is the method I am making for function 1, we should consider moving this to inside a class
 
@@ -54,3 +55,20 @@ class HotelReservation:
     def localizer(self):
         """Returns the md5 signature"""
         return hashlib.md5(str(self).encode()).hexdigest()
+
+    def to_dict(self):
+        """custom Convert the HotelReservation instance to a dictionary."""
+        return {"id_card": self.__idcard,
+                "name_surname": self.__name_surname,
+                "credit_card": self.__credit_card_number,
+                "phone_number:": self.__phone_number,
+                "arrival_date": self.__arrival,
+                "num_days": self.__num_days,
+                "room_type": self.__room_type,
+                }
+
+    def write_to_file(self, filename):
+        """custom Write the HotelReservation data to a JSON file."""
+        data = self.to_dict()
+        with open(filename, encoding="utf-8", mode='w') as f:
+            json.dump(data, f, indent=4)
