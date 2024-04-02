@@ -20,7 +20,7 @@ class TestRequestReservation(TestCase):
         with open(file_path, 'w') as f:
             json.dump(empty_data, f, indent=4)
     def test_request_TC1(self):
-        self.assertEqual('0835211121bfa38a1e8d3d304961c888', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual('23418945094a3b622ac43085569f2b33', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC2(self):
@@ -44,7 +44,7 @@ class TestRequestReservation(TestCase):
                                 "01/07/2024", 2)
 
     def test_request_TC6(self):
-        self.assertEqual('0835211121bfa38a1e8d3d304961c888', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual('23418945094a3b622ac43085569f2b33', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC7(self):
@@ -63,7 +63,7 @@ class TestRequestReservation(TestCase):
                                 2)
 
     def test_request_TC10(self):
-        self.assertEqual('0835211121bfa38a1e8d3d304961c888', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual('23418945094a3b622ac43085569f2b33', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC11(self):
@@ -83,7 +83,7 @@ class TestRequestReservation(TestCase):
                                 "01/07/2024", 2)
 
     def test_request_TC14(self):
-        self.assertEqual('0835211121bfa38a1e8d3d304961c888',
+        self.assertEqual('23418945094a3b622ac43085569f2b33',
                          roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                           "01/07/2024", 2))
 
@@ -104,15 +104,15 @@ class TestRequestReservation(TestCase):
                                 "01/07/2024", 2)
 
     def test_request_TC18(self):
-        self.assertEqual('0835211121bfa38a1e8d3d304961c888', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual('23418945094a3b622ac43085569f2b33', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC19(self):
-        self.assertEqual('e14e2d114c7f59644715baebb8241605', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "DOUBLE",
+        self.assertEqual('1398049719a529627c18ef6c85b07dd4', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "DOUBLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC20(self):
-        self.assertEqual('210a5aefeb5e14d452b7fb0c34031749', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "TRIPLE",
+        self.assertEqual('bae9ccdc1b158115f1246b8fe3332cd7', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "TRIPLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC21(self):
@@ -127,7 +127,7 @@ class TestRequestReservation(TestCase):
                                 2)
 
     def test_request_TC23(self):
-        self.assertEqual('0835211121bfa38a1e8d3d304961c888', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual('23418945094a3b622ac43085569f2b33', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 2))
 
     def test_request_TC24(self):
@@ -167,7 +167,7 @@ class TestRequestReservation(TestCase):
                                 "01/01/20000", 2)
 
     def test_request_TC31(self):
-        self.assertEqual('4af7f4ea438dfddc48b7963b0497add7', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        self.assertEqual('8c1ca44f6d7f6a21e142a86def72da31', roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                                                 "01/07/2024", 5))
 
     def test_request_TC32(self):

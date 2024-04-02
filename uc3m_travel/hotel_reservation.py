@@ -11,8 +11,7 @@ class HotelReservation:
     """Custom class for hotel reservations."""
     def __init__(self, data):
         self.__idcard = data.get('id_card')
-        justnow = datetime.utcnow()
-        self.__arrival = justnow.strftime("%d/%m/%Y")
+        self.__arrival = data.get('arrival')
         self.__name_surname = data.get('name_and_sur')
         self.__phone_number = data.get('phone_num')
         self.__room_type = data.get('room_type')

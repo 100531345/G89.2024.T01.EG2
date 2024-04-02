@@ -1,7 +1,7 @@
 """
 Module Test: test_hotel_stay.py
 """
-from uc3m_travel import room_reservation
+from uc3m_travel import roomReservation
 from freezegun import freeze_time
 from uc3m_travel import guest_arrival
 from uc3m_travel import HotelManagementException
@@ -1033,7 +1033,7 @@ class TestCombinations(TestCase):
     @freeze_time("2024-4-01")
     def test_func_one_and_two(self):
         "Test for hotel_stay file"
-        localizer = room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+        localizer = roomReservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
                          "01/04/2024", 2)
 
         valid_json = json.dumps({"Localizer": localizer, "IdCard": "12345678Z"})

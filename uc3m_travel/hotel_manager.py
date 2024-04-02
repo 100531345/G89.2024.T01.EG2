@@ -1,16 +1,17 @@
 """Module: hotel_manager.py"""
-
 import json
+import os
+from stdnum.es import nif
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelReservation
-from stdnum.es import nif
-import os
+
 
 VALID_roomTypeS = ["SINGLE", "DOUBLE", "TRIPLE"]
 
 
 def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType, arrival,
                         numDays):
+    """function1 of the assignment"""
     if not isinstance(creditCardNumber, int) or len(
             str(abs(creditCardNumber))) != 16 or not HotelManager.validate_credit_card(
             creditCardNumber):
@@ -49,6 +50,7 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
         'phone_num': phoneNumber,
         'room_type': roomType,
         'num_days': numDays,
+        'arrival': arrival
     }
     reservation = HotelReservation(data)
 
@@ -144,6 +146,6 @@ class HotelManager:
                 data = json.load(f_base)
         except FileNotFoundError as e:
             raise HotelManagementException("The data file cannot be found.") from e
-        except json.JSONDecodeError as e2:  # raise
+        except json.JSONDecodeError:  # raise
             data = []
         return data
