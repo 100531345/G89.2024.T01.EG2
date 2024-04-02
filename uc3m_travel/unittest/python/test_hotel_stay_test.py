@@ -1,17 +1,18 @@
 """
 Module Test: test_hotel_stay.py
 """
-from uc3m_travel import roomReservation
-from freezegun import freeze_time
-from uc3m_travel import guest_arrival
-from uc3m_travel import HotelManagementException
 from unittest import TestCase
 import json
 import tempfile
 import os
+from freezegun import freeze_time
+from uc3m_travel.hotel_manager import roomReservation
+from uc3m_travel.hotel_stay import guest_arrival
+from uc3m_travel.hotel_management_exception import HotelManagementException
 
 
 class TestStayHotel(TestCase):
+    """Class for hotel_stay tests"""
 
     @freeze_time("2024-4-01")
     def test_stay_1(self):
@@ -1030,6 +1031,8 @@ class TestStayHotel(TestCase):
 
 
 class TestCombinations(TestCase):
+    "Testing functions combined in one Test"
+
     @freeze_time("2024-4-01")
     def test_func_one_and_two(self):
         "Test for hotel_stay file"
