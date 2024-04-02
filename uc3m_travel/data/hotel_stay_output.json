@@ -1,9 +1,0 @@
-{
-    "Algorithm": "SHA-256",
-    "Type": "SINGLE",
-    "IdCard": "12345678Z",
-    "Localizer": "5eb63bbbe01eeed093cb22bb8f5acdc3",
-    "Arrival": "2024-04-01T00:00:00",
-    "Departure": "2024-04-04T00:00:00",
-    "Signature": "0da54330cafe260e91643305780e4a60483a93263bb18ec5262119ed152f86ce"
-}
