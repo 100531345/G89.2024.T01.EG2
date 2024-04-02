@@ -50,7 +50,7 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
         'num_days': num_days,
     }
     reservation = HotelReservation(data)
-    localizer = reservation.localizer()
+    localizer = reservation.localizer
 
     #do some checking in the file to make sure name name_surname doesn't exist
     #this would mean the client already has a reservation
@@ -71,7 +71,7 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
     reservation.write_to_file(write_file_path)
 
 
-    return "function not implemented"
+    return reservation.localizer()
 
 
 class HotelManager:

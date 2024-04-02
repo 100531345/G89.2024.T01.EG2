@@ -65,6 +65,7 @@ class HotelReservation:
                 "arrival_date": self.__arrival,
                 "num_days": self.__num_days,
                 "room_type": self.__room_type,
+                "Localizer": self.localizer
                 }
 
     def write_to_file(self, filename):

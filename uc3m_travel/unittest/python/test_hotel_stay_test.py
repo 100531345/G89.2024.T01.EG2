@@ -1116,3 +1116,20 @@ class TestStayHotel(TestCase):
         expected_error_message = "The arrival date does not correspond to the reservation date."
         self.assertEqual(expected_error_message, str(message.exception))
         os.unlink(temp_file.name)
+
+
+class TestRequestReservation(TestCase):
+    def test_func_one_and_two(self):
+        localizer = room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                         "01/07/2024", 2)
+
+        valid_json = '{"Localizer": ' + localizer + ',"IdCard":"12345678Z"}'
+
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            temp_file.write(valid_json)
+
+        result = guest_arrival(temp_file.name)
+        self.assertEqual(
+            "0da54330cafe260e91643305780e4a60483a93263bb18ec5262119ed152f86ce",
+            result)
+        os.unlink(temp_file.name)
