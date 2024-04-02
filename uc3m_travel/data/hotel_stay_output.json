@@ -52,5 +52,23 @@
         "Arrival": "2024-04-01T00:00:00",
         "Departure": "2024-04-03T00:00:00",
         "Signature": "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b"
+    },
+    {
+        "Algorithm": "SHA-256",
+        "Type": "SINGLE",
+        "IdCard": "12345678Z",
+        "Localizer": "e3778b02fa0ada33f9202203acb054d5",
+        "Arrival": "2024-04-01T00:00:00",
+        "Departure": "2024-04-03T00:00:00",
+        "Signature": "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b"
+    },
+    {
+        "Algorithm": "SHA-256",
+        "Type": "SINGLE",
+        "IdCard": "12345678Z",
+        "Localizer": "e3778b02fa0ada33f9202203acb054d5",
+        "Arrival": "2024-04-01T00:00:00",
+        "Departure": "2024-04-03T00:00:00",
+        "Signature": "dec56f8cb529f1729316237e89f273407e2c178ac8c565aa7a547e223c4bcc9b"
     }
 ]

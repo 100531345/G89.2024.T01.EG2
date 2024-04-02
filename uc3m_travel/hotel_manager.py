@@ -35,7 +35,7 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
         raise HotelManagementException("bad arrival")
     for i in range(len(arrival_list)):
         try:
-            arrival[i] = int(arrival[i])
+            arrival_list[i] = int(arrival_list[i])
         except:
             raise HotelManagementException("bad arrival")
     if arrival_list[0] < 1 or arrival_list[0] > 31 or arrival_list[1] < 1 or arrival_list[1] > 12:
