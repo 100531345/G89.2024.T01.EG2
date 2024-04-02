@@ -189,3 +189,10 @@ class TestRequestReservation(TestCase):
         self.assertRaisesRegex(HotelManagementException, "bad name surname",
                                 room_reservation, 5555555555554444, "12345678Z", "JOSELOPEZ", 911234567, "SINGLE",
                                 "01/07/2024", 2)
+
+    def test_request_TC36(self): #cant double book test
+        room_reservation(5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                         "01/07/2024", 2)
+        self.assertRaisesRegex(HotelManagementException, "There is already a reservation for this customer",
+                                room_reservation, 5555555555554444, "12345678Z", "JOSE LOPEZ", 911234567, "SINGLE",
+                                "01/07/2024", 2)
