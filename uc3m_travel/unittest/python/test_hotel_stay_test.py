@@ -14,6 +14,17 @@ from uc3m_travel.hotel_management_exception import HotelManagementException
 class TestStayHotel(TestCase):
     """Class for hotel_stay tests"""
 
+    def setUp(self):
+        full_data = []
+        current_dir = os.getcwd()
+        parent_dir = os.path.dirname(current_dir)
+        parent_dir = os.path.dirname(parent_dir)
+        adjacent_dir = os.path.join(parent_dir, 'data')
+        file_name = 'hotel_reservations.json'
+        file_path = os.path.join(adjacent_dir, file_name)
+        with open(file_path, 'w', encoding="utf-8") as f:
+            json.dump(full_data, f, indent=4)
+
     @freeze_time("2024-4-01")
     def test_stay_1(self):
         "Test for hotel_stay file"
@@ -1032,6 +1043,17 @@ class TestStayHotel(TestCase):
 
 class TestCombinations(TestCase):
     "Testing functions combined in one Test"
+
+    def setUp(self):
+        empty_data = []
+        current_dir = os.getcwd()
+        parent_dir = os.path.dirname(current_dir)
+        parent_dir = os.path.dirname(parent_dir)
+        adjacent_dir = os.path.join(parent_dir, 'data')
+        file_name = 'hotel_reservations.json'
+        file_path = os.path.join(adjacent_dir, file_name)
+        with open(file_path, 'w', encoding="utf-8") as f:
+            json.dump(empty_data, f, indent=4)
 
     @freeze_time("2024-4-01")
     def test_func_one_and_two(self):
