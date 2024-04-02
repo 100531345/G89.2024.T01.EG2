@@ -1,7 +1,6 @@
 """Module: hotel_reservation.py"""
 
 import hashlib
-from datetime import datetime
 import json
 
 #this is the method I am making for function 1, we should consider moving this to inside a class
@@ -71,7 +70,7 @@ class HotelReservation:
         """Write the HotelStay data to a JSON file."""
         data = self.to_dict()
         try:
-            with open(filename, 'r') as f:
+            with open(filename, 'r', encoding="utf-8") as f:
                 existing_data = json.load(f)
         except FileNotFoundError:
             existing_data = []
@@ -81,5 +80,5 @@ class HotelReservation:
         print(existing_data)
         existing_data.append(data)
 
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding="utf-8") as f:
             json.dump(existing_data, f, indent=4)
