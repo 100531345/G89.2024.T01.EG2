@@ -43,7 +43,7 @@ def guest_arrival(input_file):
     parent_dir = os.path.dirname(current_dir)
     parent_dir = os.path.dirname(parent_dir)
     adjacent_dir = os.path.join(parent_dir, 'data')
-    file_name = 'hotel_stay_test_data.json'
+    file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
     hotel_data = read_data_from_json(file_path)
     # check localizer exists in hotel_data, then that ID matches
@@ -149,5 +149,15 @@ class HotelStay:
     def write_to_file(self, filename):
         """Write the HotelStay data to a JSON file."""
         data = self.to_dict()
+        try:
+            with open(filename, 'r') as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            print("this bit executed")
+            existing_data = []
+
+        print(existing_data)
+        existing_data.append(data)
+
         with open(filename, 'w') as f:
-            json.dump(data, f, indent=4)
+            json.dump(existing_data, f, indent=4)

@@ -59,7 +59,7 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
     parent_dir = os.path.dirname(current_dir)
     parent_dir = os.path.dirname(parent_dir)
     adjacent_dir = os.path.join(parent_dir, 'data')
-    file_name = 'hotel_stay_test_data.json'
+    file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
     hotel_data = HotelManager.read_data_from_json(file_path)
 
