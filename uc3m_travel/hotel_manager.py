@@ -8,8 +8,6 @@ import os
 
 VALID_ROOM_TYPES = ["SINGLE", "DOUBLE", "TRIPLE"]
 
-# def request_checkout(deproom_key):
-#     if not isinstance()
 
 def room_reservation(credit_card_number, id_card, name_surname, phone_number, room_type, arrival,
                         num_days):
