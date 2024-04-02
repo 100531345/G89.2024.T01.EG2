@@ -8,7 +8,7 @@ is executed correctly.
 import json
 import os
 from datetime import datetime
-from uc3m_travel import HotelManagementException
+from src.main.python.uc3m_travel import HotelManagementException
 
 
 class HotelCheckout:

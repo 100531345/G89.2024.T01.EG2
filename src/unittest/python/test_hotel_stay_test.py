@@ -6,11 +6,11 @@ import json
 import tempfile
 import os
 from freezegun import freeze_time
-from uc3m_travel.hotel_manager import roomReservation
-from uc3m_travel.hotel_stay import guestArrival
-from uc3m_travel.hotel_management_exception import HotelManagementException
+from src.main.python.uc3m_travel.hotel_manager import roomReservation
+from src.main.python.uc3m_travel.hotel_stay import guestArrival
+from src.main.python.uc3m_travel.hotel_management_exception import HotelManagementException
 
-from uc3m_travel.hotel_checkout import HotelCheckout
+from src.main.python.uc3m_travel.hotel_checkout import HotelCheckout
 
 
 class TestStayHotel(TestCase):
@@ -30,7 +30,7 @@ class TestStayHotel(TestCase):
         current_dir = os.getcwd()
         parent_dir = os.path.dirname(current_dir)
         parent_dir = os.path.dirname(parent_dir)
-        adjacent_dir = os.path.join(parent_dir, 'data')
+        adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
         file_name = 'hotel_reservations.json'
         file_path = os.path.join(adjacent_dir, file_name)
         with open(file_path, 'w', encoding="utf-8") as f:
@@ -1060,7 +1060,7 @@ class TestCombinations(TestCase):
         current_dir = os.getcwd()
         parent_dir = os.path.dirname(current_dir)
         parent_dir = os.path.dirname(parent_dir)
-        adjacent_dir = os.path.join(parent_dir, 'data')
+        adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
         file_name = 'hotel_reservations.json'
         file_path = os.path.join(adjacent_dir, file_name)
         with open(file_path, 'w', encoding="utf-8") as f:

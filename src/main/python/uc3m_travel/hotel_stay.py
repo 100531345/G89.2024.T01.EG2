@@ -4,7 +4,7 @@ from datetime import timedelta
 import hashlib
 import json
 import os
-from uc3m_travel import HotelManagementException
+from src.main.python.uc3m_travel import HotelManagementException
 
 
 
@@ -42,7 +42,6 @@ def guestArrival(inputFile):
 
     current_dir = os.getcwd()
     parent_dir = os.path.dirname(current_dir)
-    parent_dir = os.path.dirname(parent_dir)
     adjacent_dir = os.path.join(parent_dir, 'data')
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)

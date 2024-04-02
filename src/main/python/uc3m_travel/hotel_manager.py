@@ -2,8 +2,8 @@
 import json
 import os
 from stdnum.es import nif
-from uc3m_travel import HotelManagementException
-from uc3m_travel import HotelReservation
+from src.main.python.uc3m_travel import HotelManagementException
+from src.main.python.uc3m_travel import HotelReservation
 
 
 VALID_roomTypeS = ["SINGLE", "DOUBLE", "TRIPLE"]
@@ -60,7 +60,6 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
 
     current_dir = os.getcwd()
     parent_dir = os.path.dirname(current_dir)
-    parent_dir = os.path.dirname(parent_dir)
     adjacent_dir = os.path.join(parent_dir, 'data')
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
