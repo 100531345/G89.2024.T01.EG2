@@ -79,7 +79,7 @@ class HotelStay:
         # timestamp is represented in seconds.miliseconds
         # to add the number of days we must express numdays in seconds
         self.departure = self.__arrival + timedelta(days=int(num_days))
-        self.hex_str = self.__signature_string()
+        self.hex_str = hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     def __signature_string(self):
         """Composes the string to be used for generating the key for the room"""
