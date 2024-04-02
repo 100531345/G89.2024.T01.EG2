@@ -61,18 +61,14 @@ def room_reservation(credit_card_number, id_card, name_surname, phone_number, ro
     adjacent_dir = os.path.join(parent_dir, 'data')
     file_name = 'hotel_reservations.json'
     file_path = os.path.join(adjacent_dir, file_name)
-    try:
-        hotel_data = HotelManager.read_data_from_json(file_path)
-    except:
 
-    else:
-        for res in hotel_data:
-            if res["name_surname"] == name_surname:
-                raise HotelManagementException("There is already a reservation for this customer")
+    hotel_data = HotelManager.read_data_from_json(file_path)
+    for res in hotel_data:
+        if res["name_surname"] == name_surname:
+            raise HotelManagementException("There is already a reservation for this customer")
 
     write_file_path = os.path.join(adjacent_dir, 'hotel_stay_test_data.json')
     reservation.write_to_file(write_file_path)
-
 
     return reservation.localizer
 
