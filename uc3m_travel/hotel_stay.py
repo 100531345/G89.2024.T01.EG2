@@ -13,7 +13,7 @@ def read_data_from_json(fi, encoding="utf-8"):
             data = json.load(f_base)
     except FileNotFoundError as e:
         raise HotelManagementException("The data file cannot be found.") from e
-    except json.JSONDecodeError as e2:  # raise
+    except json.JSONDecodeError:  # raise
         data = []
     return data
 
