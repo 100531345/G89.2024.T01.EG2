@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from .hotel_management_exception import HotelManagementException
+from pathlib import Path
 
 
 
@@ -40,12 +41,9 @@ def guestArrival(inputFile):
     except AttributeError as esc:
         raise HotelManagementException("The JSON does not have the expected structure.") from esc
 
-    current_dir = os.getcwd()
-    parent_dir = os.path.dirname(current_dir)
-    parent_dir = os.path.dirname(parent_dir)
-    adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
+    __path_data = str(Path.home()) + "/Documents/PycharmProjects/G89.2024.T01.EG2TWO/src/main/python/uc3m_travel/data"
     file_name = 'hotel_reservations.json'
-    file_path = os.path.join(adjacent_dir, file_name)
+    file_path = os.path.join(__path_data, file_name)
     hotel_data = readDataFromJson(file_path)
     # check localizer exists in hotel_data, then that ID matches
     loc_found = False
@@ -67,8 +65,8 @@ def guestArrival(inputFile):
         raise HotelManagementException("The locator does not correspond to the stored data")
 
     # Creates a file that includes the data with all the processed stays.
-    write_file_path = os.path.join(adjacent_dir, 'hotel_stay_output.json')
-    current.write_to_file(write_file_path)
+    # write_file_path = os.path.join(adjacent_dir, 'hotel_stay_output.json')
+    current.write_to_file(file_path)
 
     # Returns hexadecimal string with the room key (HM-FR-02-O1)
     return current.hex_str

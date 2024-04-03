@@ -4,6 +4,7 @@ import os
 from unittest import TestCase
 from uc3m_travel import roomReservation
 from uc3m_travel import HotelManagementException
+from pathlib import Path
 
 
 
@@ -12,12 +13,10 @@ class TestRequestReservation(TestCase):
 
     def setUp(self):
         empty_data = []
-        current_dir = os.getcwd()
-        parent_dir = os.path.dirname(current_dir)
-        parent_dir = os.path.dirname(parent_dir)
-        adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
+        __path_data = str(
+            Path.home()) + "/Documents/PycharmProjects/G89.2024.T01.EG2TWO/src/main/python/uc3m_travel/data"
         file_name = 'hotel_reservations.json'
-        file_path = os.path.join(adjacent_dir, file_name)
+        file_path = os.path.join(__path_data, file_name)
         with open(file_path, 'w', encoding="utf-8") as f:
             json.dump(empty_data, f, indent=4)
 

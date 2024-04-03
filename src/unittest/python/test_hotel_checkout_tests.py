@@ -12,6 +12,7 @@ from unittest import TestCase, mock
 from freezegun import freeze_time
 from uc3m_travel import HotelManagementException
 from uc3m_travel import HotelCheckout
+from pathlib import Path
 
 
 class TestHotelCheckout(TestCase):
@@ -112,16 +113,12 @@ class TestHotelCheckout(TestCase):
         self.assertTrue(result)
 
         cwd = os.getcwd()
-        parent_dir = os.path.dirname(cwd)
-        parent_dir = os.path.dirname(parent_dir)
-        parent_dir = os.path.dirname(parent_dir)
-
-        filename = os.path.join(parent_dir, "src", "main", "python","uc3m_travel","data","check"
-                                                                                         "-outs"
-                                                                                         ".json")
+        __path_data = str(Path.home()) + "/Documents/PycharmProjects/G89.2024.T01.EG2TWO/src/main/python/uc3m_travel/data"
+        file_name = 'check-outs.json'
+        file_path = os.path.join(__path_data, file_name)
 
 
-        with open(filename, "r", encoding="utf-8") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
             self.assertTrue(any(entry["room_key"] == room_key for entry in data))
 

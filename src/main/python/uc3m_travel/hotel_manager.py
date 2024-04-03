@@ -4,6 +4,7 @@ import os
 from stdnum.es import nif
 from .hotel_reservation import HotelReservation
 from .hotel_management_exception import HotelManagementException
+from pathlib import Path
 
 VALID_roomTypeS = ["SINGLE", "DOUBLE", "TRIPLE"]
 
@@ -57,20 +58,17 @@ def roomReservation(creditCardNumber, idCard, nameSurname, phoneNumber, roomType
     #do some checking in the file to make sure name nameSurname doesn't exist
     #this would mean the client already has a reservation
 
-    current_dir = os.getcwd()
-    parent_dir = os.path.dirname(current_dir)
-    parent_dir = os.path.dirname(parent_dir)
-    adjacent_dir = os.path.join(parent_dir, 'main', 'python', 'uc3m_travel', 'data')
+    __path_data = str(Path.home()) + "/Documents/PycharmProjects/G89.2024.T01.EG2TWO/src/main/python/uc3m_travel/data"
     file_name = 'hotel_reservations.json'
-    file_path = os.path.join(adjacent_dir, file_name)
+    file_path = os.path.join(__path_data, file_name)
 
     hotel_data = HotelManager.read_data_from_json(file_path)
     for res in hotel_data:
         if res["name_surname"] == nameSurname:
             raise HotelManagementException("There is already a reservation for this customer")
 
-    write_file_path = os.path.join(adjacent_dir, 'hotel_reservations.json')
-    reservation.write_to_file(write_file_path)
+    # write_file_path = os.path.join(adjacent_dir, 'hotel_reservations.json')
+    reservation.write_to_file(file_path)
 
     return reservation.localizer
 
