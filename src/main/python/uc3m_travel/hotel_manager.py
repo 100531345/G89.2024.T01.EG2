@@ -2,9 +2,8 @@
 import json
 import os
 from stdnum.es import nif
-from src.main.python.uc3m_travel import HotelManagementException
-from src.main.python.uc3m_travel import HotelReservation
-
+from .hotel_reservation import HotelReservation
+from .hotel_management_exception import HotelManagementException
 
 VALID_roomTypeS = ["SINGLE", "DOUBLE", "TRIPLE"]
 

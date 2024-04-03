@@ -10,7 +10,7 @@ from freezegun import freeze_time
 from uc3m_travel.hotel_manager import roomReservation
 from uc3m_travel.hotel_stay import guestArrival
 from uc3m_travel.hotel_checkout import HotelCheckout
-from src.main.python.uc3m_travel.hotel_management_exception import HotelManagementException
+from uc3m_travel.hotel_management_exception import HotelManagementException
 
 class TestStayHotel(TestCase):
     """Class for hotel_stay tests"""

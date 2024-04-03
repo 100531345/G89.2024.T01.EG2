@@ -4,7 +4,7 @@ from datetime import timedelta
 import hashlib
 import json
 import os
-from src.main.python.uc3m_travel import HotelManagementException
+from .hotel_management_exception import HotelManagementException
 
 
 
